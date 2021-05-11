@@ -23,11 +23,6 @@ namespace HECSFramework.Serialize
                 return false;
             }
         }
-
-        public HECSResolver GetTest()
-        {
-            return new TestResolver();
-        }
     }
 
     public partial struct ActorContainerResolver : HECSResolver<ActorContainerID>

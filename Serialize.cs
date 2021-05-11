@@ -34,7 +34,7 @@ namespace HECSFramework.Serialize
             var actorContainer = entity.GetHECSComponent<ActorContainerID>();
 
             if (actorContainer != null)
-                DataToEntitiesHelper.TryGetComponentResolver(actorContainer.GetTypeHashCode, actorContainer, out ActorContainer);
+                DataHelper.TryGetComponentResolver(actorContainer.GetTypeHashCode, actorContainer, out ActorContainer);
             else
                 ActorContainer = default;
 
@@ -49,7 +49,7 @@ namespace HECSFramework.Serialize
             {
                 if (c != null)
                 {
-                    DataToEntitiesHelper.TryGetComponentResolver(c.GetTypeHashCode, c,  out HECSResolver resolver);
+                    DataHelper.TryGetComponentResolver(c.GetTypeHashCode, c,  out HECSResolver resolver);
                     ComponentsData.Add(resolver);
                 }
             }
