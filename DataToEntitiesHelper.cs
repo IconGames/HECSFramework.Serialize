@@ -9,7 +9,7 @@ namespace HECSFramework.Core
         public static bool TryGetComponentResolver<T, U>(int typeCode, T component, out U resolver) where T : IComponent where U: HECSResolver
             => resolverMaps.TryGetComponentResolver(typeCode, component, out resolver);
 
-        public static IEntity GetEntityCopy(IEntity entity)
+        public static IEntity GetEntityWithResolversCopy(IEntity entity)
         {
             var newEntity = new Entity(entity.ID, entity.WorldId);
 
