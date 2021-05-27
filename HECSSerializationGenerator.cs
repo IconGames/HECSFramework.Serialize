@@ -10,6 +10,7 @@ namespace HECSFramework.Core.Generator
     {
         public List<Type> needResolver = new List<Type>();
         public List<Type> containersSolve = new List<Type>();
+        public List<Type> commands = new List<Type>();
         public const string Resolver = "Resolver";
         public const string Cs = ".cs";
 
@@ -20,22 +21,8 @@ namespace HECSFramework.Core.Generator
         {
             var list = new List<(string, string)>();
 
-            //var componentType = typeof(IComponent);
-
-            //var asses = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes());
-
-            //components = asses.Where(p => componentType.IsAssignableFrom(p) && !p.IsGenericType && !p.IsInterface && !p.IsAbstract).ToList();
-
             foreach (var c in componentTypes)
             {
-                var attr = c.GetCustomAttribute(typeof(CustomResolverAttribute));
-
-                if (attr != null)
-                {
-                    containersSolve.Add(c);
-                    continue;
-                }
-
                 var attr2 = c.GetCustomAttribute(typeof(GenerateResolverAttribute));
 
                 if (attr2 != null)
@@ -66,9 +53,11 @@ namespace HECSFramework.Core.Generator
 
             tree.Add(new UsingSyntax("Components"));
             tree.Add(new UsingSyntax("System"));
+            tree.Add(new UsingSyntax("MessagePack", 1));
 
             tree.Add(new NameSpaceSyntax("HECSFramework.Core"));
             tree.Add(new LeftScopeSyntax());
+            tree.Add(new TabSimpleSyntax(1, "[MessagePackObject]"));
             tree.Add(new TabSimpleSyntax(1, $"public struct {c.Name + Resolver} : IResolver<{c.Name}>, IData"));
             tree.Add(new LeftScopeSyntax(1));
             tree.Add(fields);
@@ -99,6 +88,7 @@ namespace HECSFramework.Core.Generator
 
                 if (attr != null)
                 {
+                    fields.Add(new TabSimpleSyntax(2, $"[Key({count})]"));
                     fields.Add(new TabSimpleSyntax(2, $"public {f.FieldType.Name} {f.Name};"));
 
                     fieldsForConstructor.Add((f.FieldType.Name, f.Name));
@@ -121,6 +111,7 @@ namespace HECSFramework.Core.Generator
                     {
                         var generics = property.PropertyType.GenericTypeArguments;
 
+                        fields.Add(new TabSimpleSyntax(2, $"[Key({attr.Queue})]"));
                         fields.Add(new TabSimpleSyntax(2, $"public {generics[0].Name} {property.Name};"));
                         fieldsForConstructor.Add((generics[0].Name, property.Name));
 
@@ -136,6 +127,7 @@ namespace HECSFramework.Core.Generator
                     {
                         var setTest = property.SetMethod;
 
+                        fields.Add(new TabSimpleSyntax(2, $"[Key({attr.Queue})]"));
                         fields.Add(new TabSimpleSyntax(2, $"public {property.PropertyType.Name} {property.Name};"));
                         fieldsForConstructor.Add((property.PropertyType.Name, property.Name));
 
@@ -152,8 +144,9 @@ namespace HECSFramework.Core.Generator
                 outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.AfterSync();"));
             }
 
-            defaultConstructor.Add(DefaultConstructor(c, fieldsForConstructor, fields, constructor));
+            //defaultConstructor.Add(DefaultConstructor(c, fieldsForConstructor, fields, constructor));
             constructor.Add(new TabSimpleSyntax(3, "return this;"));
+
             return tree;
         }
 
@@ -165,6 +158,7 @@ namespace HECSFramework.Core.Generator
             var defaultConstructor = new TreeSyntaxNode();
             var defaultconstructorSignature = new TreeSyntaxNode();
 
+            tree.Add(new TabSimpleSyntax(2, $"[SerializationConstructor]"));
             tree.Add(defaultconstructorSignature);
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(defaultConstructor);
@@ -197,6 +191,7 @@ namespace HECSFramework.Core.Generator
         private ISyntax IsTagBool()
         {
             var tree = new TreeSyntaxNode();
+            tree.Add(new TabSimpleSyntax(2, "[Key(0)]"));
             tree.Add(new TabSimpleSyntax(2, "public bool IsTag;"));
             return tree;
         }
@@ -207,7 +202,12 @@ namespace HECSFramework.Core.Generator
         public string GetResolverMap()
         {
             var tree = new TreeSyntaxNode();
-            tree.Add(new UsingSyntax("Components", 1));
+
+            tree.Add(new UsingSyntax("Components"));
+            tree.Add(new UsingSyntax("HECSFramework.Core"));
+            tree.Add(new UsingSyntax("MessagePack", 1));
+            tree.Add(GetUnionResolvers());
+            tree.Add(new ParagraphSyntax());
             tree.Add(new NameSpaceSyntax("HECSFramework.Core"));
             tree.Add(new LeftScopeSyntax());
             tree.Add(new TabSimpleSyntax(1, "public partial class ResolversMap"));
