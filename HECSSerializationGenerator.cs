@@ -23,13 +23,16 @@ namespace HECSFramework.Core.Generator
 
             foreach (var c in componentTypes)
             {
-                var attr2 = c.GetCustomAttribute(typeof(GenerateResolverAttribute));
+                var attr2 = c.GetCustomAttribute(typeof(CustomResolverAttribute));
 
                 if (attr2 != null)
                 {
-                    needResolver.Add(c);
                     containersSolve.Add(c);
+                    continue;
                 }
+
+                containersSolve.Add(c);
+                needResolver.Add(c);
             }
 
 
@@ -38,11 +41,9 @@ namespace HECSFramework.Core.Generator
                 list.Add((c.Name + Resolver + Cs, GetResolver(c).ToString()));
             }
 
-            var tree = new TreeSyntaxNode();
-
-
             return list;
         }
+
         private ISyntax GetResolver(Type c)
         {
             var tree = new TreeSyntaxNode();
