@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using System;
 using System.Collections.Generic;
 
 namespace HECSFramework.Core
@@ -11,6 +12,9 @@ namespace HECSFramework.Core
         
         [Key(1)]
         public List<ResolverDataContainer> Components;
+
+        [Key(2)]
+        public Guid Guid;
 
         public EntityResolver GetEntityResolver(IEntity entity)
         {
