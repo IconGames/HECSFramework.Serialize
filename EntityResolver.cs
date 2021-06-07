@@ -1,0 +1,33 @@
+﻿using MessagePack;
+using System.Collections.Generic;
+
+namespace HECSFramework.Core
+{
+    [MessagePackObject]
+    public struct EntityResolver
+    {
+        [Key(0)]
+        public List<ResolverDataContainer> Systems;
+        
+        [Key(1)]
+        public List<ResolverDataContainer> Components;
+
+        public EntityResolver GetEntityResolver(IEntity entity)
+        {
+            Systems = new List<ResolverDataContainer>(32);
+            Components = new List<ResolverDataContainer>(32);
+
+            foreach (var c in entity.GetAllComponents)
+            {
+                if (c != null)
+                    Components.Add(EntityManager.ResolversMap.GetComponentContainer(c));
+            }
+
+            foreach (var s in entity.GetAllSystems)
+                if (s != null)
+                    Systems.Add(EntityManager.ResolversMap.GetSystemContainer(s));
+
+            return this;
+        }
+    }
+}

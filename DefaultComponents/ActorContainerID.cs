@@ -28,5 +28,11 @@ namespace HECSFramework.Core
 		{
 			actorcontainerid.ID = this.ID;
 		}
-	}
+
+        public void Out(ref IEntity entity)
+        {
+			var local = entity.GetHECSComponent<ActorContainerID>();
+			Out(ref local);
+        }
+    }
 }

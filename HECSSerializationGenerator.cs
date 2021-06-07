@@ -51,6 +51,7 @@ namespace HECSFramework.Core.Generator
             var constructor = new TreeSyntaxNode();
             var defaultConstructor = new TreeSyntaxNode();
             var outFunc = new TreeSyntaxNode();
+            var out2EntityFunc = new TreeSyntaxNode();
 
             tree.Add(new UsingSyntax("Components"));
             tree.Add(new UsingSyntax("System"));
@@ -70,6 +71,11 @@ namespace HECSFramework.Core.Generator
             //tree.Add(new ParagraphSyntax());
             //tree.Add(defaultConstructor);
             //tree.Add(new ParagraphSyntax());
+            tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {typeof(IEntity).Name} entity)"));
+            tree.Add(new LeftScopeSyntax(2));
+            tree.Add(GetOutToEntityVoidBody(c));
+            tree.Add(new RightScopeSyntax(2));  
+            
             tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {c.Name} {c.Name.ToLower()})"));
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(outFunc);
@@ -148,6 +154,14 @@ namespace HECSFramework.Core.Generator
             //defaultConstructor.Add(DefaultConstructor(c, fieldsForConstructor, fields, constructor));
             constructor.Add(new TabSimpleSyntax(3, "return this;"));
 
+            return tree;
+        }
+
+        private ISyntax GetOutToEntityVoidBody(Type c)
+        {
+            var tree = new TreeSyntaxNode();
+            tree.Add(new TabSimpleSyntax(3, $"var local = entity.Get{c.Name}();"));
+            tree.Add(new TabSimpleSyntax(3, $"Out(ref local);"));
             return tree;
         }
 
