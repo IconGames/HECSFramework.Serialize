@@ -13,10 +13,10 @@ namespace HECSFramework.Core
             return copy;
         }
 
-        public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
+        public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool addComponent = true)
         {
             foreach (var c in entityResolver.Components)
-                EntityManager.ResolversMap.LoadComponentFromContainer(c, ref entity, true);
+                EntityManager.ResolversMap.LoadComponentFromContainer(c, ref entity, addComponent);
 
             foreach (var s in entityResolver.Systems)
             {
