@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HECSFramework.Core
 {
@@ -27,6 +28,26 @@ namespace HECSFramework.Core
 
                 entity.AddHecsSystem(newSys);
             }
+        }
+
+        public static List<IEntity> GetEntitiesFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
+        {
+            var list = new List<IEntity>(entitiesResolvers.Count);
+
+            foreach (var e in entitiesResolvers)
+                list.Add(EntityManager.ResolversMap.GetEntityFromResolver(e, worldIndex));
+
+            return list;
+        }
+
+        public static List<EntityResolver> GetEntityResolvers(this List<IEntity> entities)
+        {
+            var list = new List<EntityResolver>(entities.Count);
+
+            foreach (var e in entities)
+                list.Add(new EntityResolver().GetEntityResolver(e));
+
+            return list;
         }
     }
 }
