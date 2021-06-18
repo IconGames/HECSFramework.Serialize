@@ -47,15 +47,15 @@ namespace HECSFramework.Core.Generator
         private ISyntax GetResolver(Type c)
         {
             var tree = new TreeSyntaxNode();
+            var usings = new TreeSyntaxNode();
             var fields = new TreeSyntaxNode();
             var constructor = new TreeSyntaxNode();
             var defaultConstructor = new TreeSyntaxNode();
             var outFunc = new TreeSyntaxNode();
             var out2EntityFunc = new TreeSyntaxNode();
+            tree.Add(usings);
 
-            tree.Add(new UsingSyntax("Components"));
-            tree.Add(new UsingSyntax("System"));
-            tree.Add(new UsingSyntax("MessagePack", 1));
+          
 
             tree.Add(new NameSpaceSyntax("HECSFramework.Core"));
             tree.Add(new LeftScopeSyntax());
@@ -74,8 +74,8 @@ namespace HECSFramework.Core.Generator
             tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {typeof(IEntity).Name} entity)"));
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(GetOutToEntityVoidBody(c));
-            tree.Add(new RightScopeSyntax(2));  
-            
+            tree.Add(new RightScopeSyntax(2));
+
             tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {c.Name} {c.Name.ToLower()})"));
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(outFunc);
@@ -96,9 +96,23 @@ namespace HECSFramework.Core.Generator
                 if (attr != null)
                 {
                     fields.Add(new TabSimpleSyntax(2, $"[Key({count})]"));
-                    fields.Add(new TabSimpleSyntax(2, $"public {f.FieldType.Name} {f.Name};"));
 
-                    fieldsForConstructor.Add((f.FieldType.Name, f.Name));
+                    if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
+                    {
+                        var type = f.FieldType.GetGenericArguments()[0]; // use this...
+                        fields.Add(new TabSimpleSyntax(2, $"public List<{type.Name}> {f.Name};"));
+                        usings.Add(new UsingSyntax("System.Collections.Generic"));
+                    }
+                    else
+                        fields.Add(new TabSimpleSyntax(2, $"public {f.FieldType.Name} {f.Name};"));
+
+                    if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
+                    {
+                        var type = f.FieldType.GetGenericArguments()[0]; // use this...
+                        fieldsForConstructor.Add(($"List<{type.Name}>", f.Name));
+                    }
+                    else
+                        fieldsForConstructor.Add((f.FieldType.Name, f.Name));
 
                     constructor.Add(new TabSimpleSyntax(3, $"this.{f.Name} = {c.Name.ToLower()}.{f.Name};"));
                     outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.{f.Name} = this.{f.Name};"));
@@ -153,6 +167,10 @@ namespace HECSFramework.Core.Generator
 
             //defaultConstructor.Add(DefaultConstructor(c, fieldsForConstructor, fields, constructor));
             constructor.Add(new TabSimpleSyntax(3, "return this;"));
+
+            usings.Add(new UsingSyntax("Components"));
+            usings.Add(new UsingSyntax("System"));
+            usings.Add(new UsingSyntax("MessagePack", 1));
 
             return tree;
         }
