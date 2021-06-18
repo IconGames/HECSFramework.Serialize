@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HECSFramework.Core
 {
-    [MessagePackObject]
+    [MessagePackObject, Serializable]
     public struct EntityResolver
     {
         [Key(0)]

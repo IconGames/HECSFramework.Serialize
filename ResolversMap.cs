@@ -85,7 +85,7 @@ namespace HECSFramework.Core
         }
     }
 
-    [MessagePackObject]
+    [MessagePackObject, Serializable]
     public struct ResolverDataContainer : IData
     {
         /// <summary>
