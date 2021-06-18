@@ -20,6 +20,7 @@ namespace HECSFramework.Core
         {
             Systems = new List<ResolverDataContainer>(32);
             Components = new List<ResolverDataContainer>(32);
+            Guid = entity.GUID;
 
             foreach (var c in entity.GetAllComponents)
             {
