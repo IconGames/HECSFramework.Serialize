@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HECSFramework.Core
 {
@@ -28,6 +29,27 @@ namespace HECSFramework.Core
 
                 entity.AddHecsSystem(newSys);
             }
+        } 
+        
+        public static Task LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
+        {
+            foreach (var c in entityResolver.Components)
+            {
+                EntityManager.ResolversMap.LoadComponentFromContainer(c, ref entity, false);
+            }
+                
+
+            foreach (var s in entityResolver.Systems)
+            {
+                var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
+
+                if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
+                    continue;
+
+                entity.AddHecsSystem(newSys);
+            }
+
+            return Task.CompletedTask;
         }
 
         public static List<IEntity> GetEntitiesFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
