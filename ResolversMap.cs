@@ -1,5 +1,4 @@
 ﻿using Components;
-using HECSFramework.Unity;
 using MessagePack;
 using System;
 using System.Collections.Generic;
