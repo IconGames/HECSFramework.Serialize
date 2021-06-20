@@ -95,7 +95,7 @@ namespace HECSFramework.Core.Generator
 
                 if (attr != null)
                 {
-                    fields.Add(new TabSimpleSyntax(2, $"[Key({count})]"));
+                    fields.Add(new TabSimpleSyntax(2, $"[Key({attr.Queue})]"));
 
                     if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
                     {
