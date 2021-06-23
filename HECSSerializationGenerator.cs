@@ -59,7 +59,7 @@ namespace HECSFramework.Core.Generator
 
             tree.Add(new NameSpaceSyntax("HECSFramework.Core"));
             tree.Add(new LeftScopeSyntax());
-            tree.Add(new TabSimpleSyntax(1, "[MessagePackObject]"));
+            tree.Add(new TabSimpleSyntax(1, "[MessagePackObject, Serializable]"));
             tree.Add(new TabSimpleSyntax(1, $"public struct {c.Name + Resolver} : IResolver<{c.Name}>, IData"));
             tree.Add(new LeftScopeSyntax(1));
             tree.Add(fields);
@@ -104,7 +104,7 @@ namespace HECSFramework.Core.Generator
                         usings.Add(new UsingSyntax("System.Collections.Generic"));
                     }
                     else
-                        fields.Add(new TabSimpleSyntax(2, $"public {f.FieldType.Name} {f.Name};"));
+                        fields.Add(new TabSimpleSyntax(2, $"public {AdaptPrimitives(f.FieldType.Name)} {f.Name};"));
 
                     if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
                     {
@@ -112,7 +112,7 @@ namespace HECSFramework.Core.Generator
                         fieldsForConstructor.Add(($"List<{type.Name}>", f.Name));
                     }
                     else
-                        fieldsForConstructor.Add((f.FieldType.Name, f.Name));
+                        fieldsForConstructor.Add((AdaptPrimitives(f.FieldType.Name), f.Name));
 
                     constructor.Add(new TabSimpleSyntax(3, $"this.{f.Name} = {c.Name.ToLower()}.{f.Name};"));
                     outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.{f.Name} = this.{f.Name};"));
@@ -149,7 +149,7 @@ namespace HECSFramework.Core.Generator
                         var setTest = property.SetMethod;
 
                         fields.Add(new TabSimpleSyntax(2, $"[Key({attr.Queue})]"));
-                        fields.Add(new TabSimpleSyntax(2, $"public {property.PropertyType.Name} {property.Name};"));
+                        fields.Add(new TabSimpleSyntax(2, $"public {AdaptPrimitives(property.PropertyType.Name)} {property.Name};"));
                         fieldsForConstructor.Add((property.PropertyType.Name, property.Name));
 
                         constructor.Add(new TabSimpleSyntax(3, $"this.{property.Name} = {c.Name.ToLower()}.{property.Name};"));
@@ -173,6 +173,27 @@ namespace HECSFramework.Core.Generator
             usings.Add(new UsingSyntax("MessagePack", 1));
 
             return tree;
+        }
+
+        private string AdaptPrimitives(string source)
+        {
+            switch (source)
+            {
+                case "Single":
+                    return "float";
+                case "Int32":
+                    return "int";
+                case "Boolean":
+                    return "bool";    
+                case "Int64":
+                    return "long"; 
+                case "Byte":
+                    return "byte";  
+                case "Double":
+                    return "double";
+                default:
+                    return source;
+            }
         }
 
         private ISyntax GetOutToEntityVoidBody(Type c)
