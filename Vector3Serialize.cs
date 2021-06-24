@@ -1,8 +1,9 @@
 ﻿using MessagePack;
+using System;
 
 namespace HECSFramework.Core
 {
-    [MessagePackObject]
+    [MessagePackObject, Serializable]
     public struct Vector3Serialize
     {
         [Key(0)]

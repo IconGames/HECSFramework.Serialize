@@ -13,7 +13,7 @@ namespace Components
 
 namespace HECSFramework.Core
 {
-	[MessagePackObject]
+	[MessagePackObject, Serializable]
 	public struct ActorContainerIDResolver : IResolver<ActorContainerID>, IData
 	{
 		[Key(0)]
