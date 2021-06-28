@@ -101,6 +101,9 @@ namespace HECSFramework.Core
         
         [Key(3)]
         public Guid EntityGuid;
+
+        [Key(4)]
+        public bool IsSyncSelf;
     }
 
     public interface IResolverProvider

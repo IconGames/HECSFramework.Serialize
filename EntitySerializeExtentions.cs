@@ -29,7 +29,9 @@ namespace HECSFramework.Core
 
                 entity.AddHecsSystem(newSys);
             }
-        } 
+
+            entity.SetGuid(entityResolver.Guid);
+        }
         
         public static Task LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
         {
