@@ -82,6 +82,8 @@ namespace HECSFramework.Core
                 TypeHashCode = component.GetTypeHashCode,
             };
         }
+
+        partial void InitPartialCommandResolvers();
     }
 
     [MessagePackObject, Serializable]

@@ -1,7 +1,6 @@
 ﻿using HECSFramework.Core.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace HECSFramework.Core.Generator
@@ -88,6 +87,11 @@ namespace HECSFramework.Core.Generator
             int count = 0;
 
             List<(string type, string name)> fieldsForConstructor = new List<(string type, string name)>();
+
+            if (typeof(IBeforeSerializationComponent).IsAssignableFrom(c))
+            {
+                constructor.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.BeforeSync();"));
+            }
 
             foreach (var f in typeFields)
             {
@@ -426,6 +430,7 @@ namespace HECSFramework.Core.Generator
             tree.Add(new TabSimpleSyntax(3, "GetComponentContainerFunc = GetContainerForComponentFuncProvider;"));
             tree.Add(new TabSimpleSyntax(3, "ProcessResolverContainer = ProcessResolverContainerRealisation;"));
             tree.Add(new TabSimpleSyntax(3, "GetComponentFromContainer = GetComponentFromContainerFuncRealisation;"));
+            tree.Add(new TabSimpleSyntax(3, "InitPartialCommandResolvers();"));
             tree.Add(new RightScopeSyntax(2));
 
             return tree;
