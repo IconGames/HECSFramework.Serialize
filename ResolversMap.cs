@@ -1,5 +1,6 @@
 ﻿using Components;
 using MessagePack;
+using MessagePack.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace HECSFramework.Core
         private Dictionary<int, IResolverProvider> resolvers;
 
         private GetContainer<IComponent> GetComponentContainerFunc;
-        
+        private static bool isMessagePackInited;
+
         /// <summary>
         /// Factory resolver data containers to components
         /// </summary>
@@ -29,6 +31,20 @@ namespace HECSFramework.Core
 
         public void LoadDataFromContainer(ResolverDataContainer dataContainerForResolving, int worldIndex = 0) => LoadDataFromContainerSwitch(dataContainerForResolving, worldIndex);
         
+        static ResolversMap()
+        {
+            if (isMessagePackInited)
+                return;
+
+            if (!isMessagePackInited)
+                StaticCompositeResolver.Instance.Register(StandardResolver.Instance, GeneratedResolver.Instance);
+
+            isMessagePackInited = true;
+
+            var option = MessagePackSerializerOptions.Standard.WithResolver(StaticCompositeResolver.Instance);
+            MessagePackSerializer.DefaultOptions = option;
+        }
+
         public void LoadComponentFromContainer(ResolverDataContainer resolverDataContainer, ref IEntity entity, bool checkForAvailable = false)
         {
             if (checkForAvailable)
