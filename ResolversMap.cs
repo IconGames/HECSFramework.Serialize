@@ -29,9 +29,9 @@ namespace HECSFramework.Core
         /// </summary>
         public ProcessResolverContainer ProcessResolverContainer { get; private set; }
 
-        public void LoadDataFromContainer(ResolverDataContainer dataContainerForResolving, int worldIndex = 0) => LoadDataFromContainerSwitch(dataContainerForResolving, worldIndex);
+        public void LoadDataFromContainer(ref ResolverDataContainer dataContainerForResolving, int worldIndex = 0) => LoadDataFromContainerSwitch(dataContainerForResolving, worldIndex);
 
-        public void LoadComponentFromContainer(ResolverDataContainer resolverDataContainer, ref IEntity entity, bool checkForAvailable = false)
+        public void LoadComponentFromContainer(ref ResolverDataContainer resolverDataContainer, ref IEntity entity, bool checkForAvailable = false)
         {
             if (checkForAvailable)
             {
@@ -41,7 +41,7 @@ namespace HECSFramework.Core
                     entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
             }
 
-            EntityManager.ResolversMap.LoadComponentFromContainer(resolverDataContainer, ref entity);  
+            EntityManager.ResolversMap.ProcessResolverContainer(ref resolverDataContainer, ref entity);
         }
 
         public ResolverDataContainer GetSystemContainer<T>(T system) where T: ISystem
