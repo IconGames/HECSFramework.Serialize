@@ -55,7 +55,7 @@ namespace HECSFramework.Core
                     entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
             }
 
-            (resolverDataContainer.Data as IResolver).Out(ref entity);
+            EntityManager.ResolversMap.ProcessResolverContainerRealisation(ref resolverDataContainer, ref entity);  
         }
 
         public ResolverDataContainer GetSystemContainer<T>(T system) where T: ISystem
@@ -88,11 +88,11 @@ namespace HECSFramework.Core
             return entity;
         }
 
-        private ResolverDataContainer PackComponentToContainer(IComponent component, IData data)
+        private ResolverDataContainer PackComponentToContainer<T>(T component, IData data) where T : IComponent 
         {
             return new ResolverDataContainer
             {
-                Data = data,
+                Data = MessagePack.MessagePackSerializer.Serialize(component),
                 EntityGuid = component.Owner.GUID,
                 Type = 0,
                 TypeHashCode = component.GetTypeHashCode,
@@ -115,7 +115,7 @@ namespace HECSFramework.Core
         public int TypeHashCode;
         
         [Key(2)]
-        public IData Data;
+        public byte[] Data;
         
         [Key(3)]
         public Guid EntityGuid;

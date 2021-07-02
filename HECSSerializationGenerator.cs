@@ -313,7 +313,7 @@ namespace HECSFramework.Core.Generator
             foreach (var container in containersSolve)
             {
                 caseBody.Add(new TabSimpleSyntax(4, $"case {IndexGenerator.GetIndexForType(container)}:"));
-                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}{Resolver.ToLower()} = ({container.Name + Resolver})dataContainerForResolving.Data;"));
+                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}{Resolver.ToLower()} = MessagePackSerializer.Deserialize<{container.Name}{Resolver}>(dataContainerForResolving.Data);"));
                 caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}component = ({container.Name})entity.Get{container.Name}();"));
                 caseBody.Add(new TabSimpleSyntax(5, $"{container.Name}{Resolver.ToLower()}.Out(ref {container.Name}component);"));
                 caseBody.Add(new TabSimpleSyntax(5, $"break;"));
@@ -341,7 +341,7 @@ namespace HECSFramework.Core.Generator
             {
                 caseBody.Add(new TabSimpleSyntax(4, $"case {IndexGenerator.GetIndexForType(container)}:"));
                 caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}new = new {container.Name}();"));
-                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}data = ({container.Name + Resolver})(resolverDataContainer.Data);"));
+                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}data = MessagePackSerializer.Deserialize<{container.Name}{Resolver}>(resolverDataContainer.Data);"));
                 caseBody.Add(new TabSimpleSyntax(5, $"{container.Name}data.Out(ref {container.Name}new);"));
                 caseBody.Add(new TabSimpleSyntax(5, $"return {container.Name}new;"));
             }
@@ -366,7 +366,7 @@ namespace HECSFramework.Core.Generator
             foreach (var container in containersSolve)
             {
                 caseBody.Add(new TabSimpleSyntax(4, $"case {IndexGenerator.GetIndexForType(container)}:"));
-                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}{Resolver.ToLower()} = ({container.Name + Resolver})(dataContainerForResolving.Data);"));
+                caseBody.Add(new TabSimpleSyntax(5, $"var {container.Name}{Resolver.ToLower()} = MessagePackSerializer.Deserialize<{container.Name}{Resolver}>(dataContainerForResolving.Data);"));
                 caseBody.Add(new TabSimpleSyntax(5, $"if (EntityManager.TryGetEntityByID(dataContainerForResolving.EntityGuid, out var entityOf{container.Name}))"));
                 caseBody.Add(new LeftScopeSyntax(5));
                 caseBody.Add(new TabSimpleSyntax(6, $"var {container.Name}component = ({container.Name})entityOf{container.Name}.Get{container.Name}();"));
