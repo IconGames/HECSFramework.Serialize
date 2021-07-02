@@ -41,7 +41,7 @@ namespace HECSFramework.Core
                     entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
             }
 
-            EntityManager.ResolversMap.ProcessResolverContainerRealisation(ref resolverDataContainer, ref entity);  
+            EntityManager.ResolversMap.LoadComponentFromContainer(resolverDataContainer, ref entity);  
         }
 
         public ResolverDataContainer GetSystemContainer<T>(T system) where T: ISystem
