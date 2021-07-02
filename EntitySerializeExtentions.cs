@@ -18,7 +18,10 @@ namespace HECSFramework.Core
         public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool addComponent = true)
         {
             foreach (var c in entityResolver.Components)
-                EntityManager.ResolversMap.LoadComponentFromContainer(c, ref entity, addComponent);
+            {
+                var componentResolver = c;
+                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, addComponent);
+            }
 
             foreach (var s in entityResolver.Systems)
             {
@@ -37,10 +40,10 @@ namespace HECSFramework.Core
         {
             foreach (var c in entityResolver.Components)
             {
-                EntityManager.ResolversMap.LoadComponentFromContainer(c, ref entity, false);
+                var componentResolver = c;
+                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, false);
             }
                 
-
             foreach (var s in entityResolver.Systems)
             {
                 var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
