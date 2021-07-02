@@ -30,20 +30,6 @@ namespace HECSFramework.Core
         public ProcessResolverContainer ProcessResolverContainer { get; private set; }
 
         public void LoadDataFromContainer(ResolverDataContainer dataContainerForResolving, int worldIndex = 0) => LoadDataFromContainerSwitch(dataContainerForResolving, worldIndex);
-        
-        static ResolversMap()
-        {
-            if (isMessagePackInited)
-                return;
-
-            if (!isMessagePackInited)
-                StaticCompositeResolver.Instance.Register(StandardResolver.Instance, GeneratedResolver.Instance);
-
-            isMessagePackInited = true;
-
-            var option = MessagePackSerializerOptions.Standard.WithResolver(StaticCompositeResolver.Instance);
-            MessagePackSerializer.DefaultOptions = option;
-        }
 
         public void LoadComponentFromContainer(ResolverDataContainer resolverDataContainer, ref IEntity entity, bool checkForAvailable = false)
         {
