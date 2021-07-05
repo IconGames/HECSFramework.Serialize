@@ -74,11 +74,11 @@ namespace HECSFramework.Core
             return entity;
         }
 
-        private ResolverDataContainer PackComponentToContainer<T>(T component, IData data) where T : IComponent 
+        private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {
             return new ResolverDataContainer
             {
-                Data = MessagePack.MessagePackSerializer.Serialize(component),
+                Data = MessagePack.MessagePackSerializer.Serialize(data),
                 EntityGuid = component.Owner.GUID,
                 Type = 0,
                 TypeHashCode = component.GetTypeHashCode,

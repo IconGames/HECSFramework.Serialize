@@ -9,7 +9,7 @@ namespace HECSFramework.Core
     {
         [Key(0)]
         public List<ResolverDataContainer> Systems;
-        
+
         [Key(1)]
         public List<ResolverDataContainer> Components;
 
@@ -24,8 +24,10 @@ namespace HECSFramework.Core
 
             foreach (var c in entity.GetAllComponents)
             {
-                if (c != null)
-                    Components.Add(EntityManager.ResolversMap.GetComponentContainer(c));
+                if (c == null)
+                    continue;
+
+                Components.Add(EntityManager.ResolversMap.GetComponentContainer(c));
             }
 
             foreach (var s in entity.GetAllSystems)
