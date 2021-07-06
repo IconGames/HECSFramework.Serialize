@@ -27,12 +27,22 @@ namespace HECSFramework.Core
                 if (c == null)
                     continue;
 
+                if (c is INotCore)
+                    continue;
+
                 Components.Add(EntityManager.ResolversMap.GetComponentContainer(c));
             }
 
             foreach (var s in entity.GetAllSystems)
-                if (s != null)
-                    Systems.Add(EntityManager.ResolversMap.GetSystemContainer(s));
+            {
+                if (s == null)
+                    continue;
+                
+                if (s is INotCore)
+                    continue;
+
+                Systems.Add(EntityManager.ResolversMap.GetSystemContainer(s));
+            }
 
             return this;
         }
