@@ -16,12 +16,17 @@ namespace HECSFramework.Core
             foreach (var c in entityResolver.Components)
             {
                 var component = EntityManager.ResolversMap.GetComponentFromContainer(c);
-                Components.Add(component);
+
+                if (component != null)
+                    Components.Add(component);
             }
 
             foreach (var s in entityResolver.Systems)
             {
-                Systems.Add(EntityManager.ResolversMap.GetSystemFromContainer(s));
+                var sLoaded = EntityManager.ResolversMap.GetSystemFromContainer(s);
+                
+                if (sLoaded != null)
+                    Systems.Add(sLoaded);
             }
         }
 
@@ -31,8 +36,8 @@ namespace HECSFramework.Core
             {
                 if (c != null)
                     entity.AddHecsComponent(c);
-            }     
-            
+            }
+
             foreach (var s in Systems)
             {
                 if (s != null)

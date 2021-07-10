@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Components;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +36,25 @@ namespace HECSFramework.Core
 
             entity.SetGuid(entityResolver.Guid);
         }
-        
+
+        public static IEntity GetEntityFromResolver(this EntityResolver entityResolver, int worldIndex = 0, bool addComponent = true)
+        {
+            var data = new UnPackEntityResolver(entityResolver);
+            var id = data.Components.FirstOrDefault(x => x is ActorContainerID) as ActorContainerID;
+
+            Entity entity;
+            
+            if (id != null)
+                entity = new Entity(id.ID, worldIndex);
+            else
+                entity = new Entity(entityResolver.Guid.ToString());
+
+            data.InitEntity(entity);
+            entity.SetGuid(entityResolver.Guid);
+
+            return entity;
+        }
+
         public static Task LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
         {
             foreach (var c in entityResolver.Components)
