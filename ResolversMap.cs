@@ -35,10 +35,11 @@ namespace HECSFramework.Core
         {
             if (checkForAvailable)
             {
-                TypesMap.GetComponentInfo(resolverDataContainer.TypeHashCode, out var mask);
-
-                if (!entity.ContainsMask(ref mask.ComponentsMask))
-                    entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
+                if (TypesMap.GetComponentInfo(resolverDataContainer.TypeHashCode, out var mask))
+                {
+                    if (!entity.ContainsMask(ref mask.ComponentsMask))
+                        entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
+                }
             }
 
             EntityManager.ResolversMap.ProcessResolverContainer(ref resolverDataContainer, ref entity);
