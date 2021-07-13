@@ -4,7 +4,7 @@ using System;
 namespace HECSFramework.Core
 {
     [MessagePackObject, Serializable]
-    public struct Vector3Serialize
+    public partial struct Vector3Serialize
     {
         [Key(0)]
         public float X;
