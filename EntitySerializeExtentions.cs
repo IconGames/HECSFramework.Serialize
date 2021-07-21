@@ -60,7 +60,7 @@ namespace HECSFramework.Core
             foreach (var c in entityResolver.Components)
             {
                 var componentResolver = c;
-                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, false);
+                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, true);
             }
                 
             foreach (var s in entityResolver.Systems)
