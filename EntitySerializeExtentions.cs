@@ -70,7 +70,8 @@ namespace HECSFramework.Core
                 if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
                     continue;
 
-                entity.AddHecsSystem(newSys);
+                if (newSys != null)
+                    entity.AddHecsSystem(newSys);
             }
 
             return Task.CompletedTask;
