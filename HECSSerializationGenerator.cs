@@ -55,8 +55,6 @@ namespace HECSFramework.Core.Generator
             var out2EntityFunc = new TreeSyntaxNode();
             tree.Add(usings);
 
-          
-
             tree.Add(new NameSpaceSyntax("HECSFramework.Core"));
             tree.Add(new LeftScopeSyntax());
             tree.Add(new TabSimpleSyntax(1, "[MessagePackObject, Serializable]"));
@@ -115,8 +113,11 @@ namespace HECSFramework.Core.Generator
                     {
                         fields.Add(new TabSimpleSyntax(2, $"public {AdaptPrimitives(f.FieldType.Name)} {f.Name};"));
                         
-                        if (usings.Tree.FirstOrDefault(x=> x.ToString() == new UsingSyntax(f.FieldType.Namespace).ToString()) == null)
-                            usings.Add(new UsingSyntax(f.FieldType.Namespace));
+                        if (!string.IsNullOrEmpty(f.FieldType.Namespace?.ToString()))
+                        {
+                            if (usings.Tree.FirstOrDefault(x => x.ToString() == new UsingSyntax(f.FieldType.Namespace).ToString()) == null)
+                                usings.Add(new UsingSyntax(f.FieldType.Namespace));
+                        }
                     }
 
                     constructor.Add(new TabSimpleSyntax(3, $"this.{f.Name} = {c.Name.ToLower()}.{f.Name};"));
@@ -160,8 +161,11 @@ namespace HECSFramework.Core.Generator
                         constructor.Add(new TabSimpleSyntax(3, $"this.{property.Name} = {c.Name.ToLower()}.{property.Name};"));
                         outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.{property.Name} = this.{property.Name};"));
 
-                        if (usings.Tree.FirstOrDefault(x => x.ToString() == new UsingSyntax(property.PropertyType.Namespace).ToString()) == null)
-                            usings.Add(new UsingSyntax(property.PropertyType.Namespace));
+                        if (!string.IsNullOrEmpty(property.PropertyType.Namespace?.ToString()))
+                        {
+                            if (usings.Tree.FirstOrDefault(x => x.ToString() == new UsingSyntax(property.PropertyType.Namespace).ToString()) == null)
+                                usings.Add(new UsingSyntax(property.PropertyType.Namespace));
+                        }
                     }
 
                     count++;
