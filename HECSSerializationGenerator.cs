@@ -1,6 +1,7 @@
 ﻿using HECSFramework.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace HECSFramework.Core.Generator
@@ -82,6 +83,9 @@ namespace HECSFramework.Core.Generator
             tree.Add(new RightScopeSyntax(1));
             tree.Add(new RightScopeSyntax());
 
+            usings.Add(new UsingSyntax("Components"));
+            usings.Add(new UsingSyntax("System"));
+
             var typeFields = c.GetFields(BindingFlags.Public | BindingFlags.Instance);
             var typeProperties = c.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             int count = 0;
@@ -110,16 +114,10 @@ namespace HECSFramework.Core.Generator
                     else
                     {
                         fields.Add(new TabSimpleSyntax(2, $"public {AdaptPrimitives(f.FieldType.Name)} {f.Name};"));
-                        usings.Add(new UsingSyntax(f.FieldType.Namespace));
+                        
+                        if (usings.Tree.FirstOrDefault(x=> x.ToString() == new UsingSyntax(f.FieldType.Namespace).ToString()) == null)
+                            usings.Add(new UsingSyntax(f.FieldType.Namespace));
                     }
-
-                    if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
-                    {
-                        var type = f.FieldType.GetGenericArguments()[0]; // use this...
-                        fieldsForConstructor.Add(($"List<{type.Name}>", f.Name));
-                    }
-                    else
-                        fieldsForConstructor.Add((AdaptPrimitives(f.FieldType.Name), f.Name));
 
                     constructor.Add(new TabSimpleSyntax(3, $"this.{f.Name} = {c.Name.ToLower()}.{f.Name};"));
                     outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.{f.Name} = this.{f.Name};"));
@@ -161,6 +159,9 @@ namespace HECSFramework.Core.Generator
 
                         constructor.Add(new TabSimpleSyntax(3, $"this.{property.Name} = {c.Name.ToLower()}.{property.Name};"));
                         outFunc.Add(new TabSimpleSyntax(3, $"{c.Name.ToLower()}.{property.Name} = this.{property.Name};"));
+
+                        if (usings.Tree.FirstOrDefault(x => x.ToString() == new UsingSyntax(property.PropertyType.Namespace).ToString()) == null)
+                            usings.Add(new UsingSyntax(property.PropertyType.Namespace));
                     }
 
                     count++;
@@ -175,8 +176,6 @@ namespace HECSFramework.Core.Generator
             //defaultConstructor.Add(DefaultConstructor(c, fieldsForConstructor, fields, constructor));
             constructor.Add(new TabSimpleSyntax(3, "return this;"));
 
-            usings.Add(new UsingSyntax("Components"));
-            usings.Add(new UsingSyntax("System"));
             usings.Add(new UsingSyntax("MessagePack", 1));
 
             return tree;
@@ -198,6 +197,8 @@ namespace HECSFramework.Core.Generator
                     return "byte";  
                 case "Double":
                     return "double";
+                case "String":
+                    return "string";
                 default:
                     return source;
             }
