@@ -108,7 +108,10 @@ namespace HECSFramework.Core.Generator
                         usings.Add(new UsingSyntax("System.Collections.Generic"));
                     }
                     else
+                    {
                         fields.Add(new TabSimpleSyntax(2, $"public {AdaptPrimitives(f.FieldType.Name)} {f.Name};"));
+                        usings.Add(new UsingSyntax(f.FieldType.Namespace));
+                    }
 
                     if (f.FieldType.IsGenericType && f.FieldType.Name.Contains("List"))
                     {
