@@ -1,5 +1,6 @@
 ﻿using MessagePack;
 using System;
+using System.Numerics;
 
 namespace HECSFramework.Core
 {
@@ -19,5 +20,15 @@ namespace HECSFramework.Core
             Y = y;
             Z = z;
         }
+
+        public Vector3Serialize(Vector3 vector3)
+        {
+            X = vector3.X;
+            Y = vector3.Y;
+            Z = vector3.Z;
+        }
+        
+        public Vector3 AsNumericsVector() 
+            => new Vector3(X, Y, Z);
     }
 }
