@@ -30,5 +30,8 @@ namespace HECSFramework.Core
         
         public Vector3 AsNumericsVector() 
             => new Vector3(X, Y, Z);
+
+        public Vector2 AsNumericsVector2() 
+            => new Vector2(X, Z);
     }
 }

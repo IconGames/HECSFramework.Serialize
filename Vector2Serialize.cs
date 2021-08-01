@@ -26,5 +26,8 @@ namespace HECSFramework.Core
         
         public Vector2 AsNumericsVector() 
             => new Vector2(X, Y);
+        
+        public Vector3 AsNumericsVector3() 
+            => new Vector3(X, 0, Y);
     }
 }
