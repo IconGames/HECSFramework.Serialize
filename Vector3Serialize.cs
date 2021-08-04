@@ -5,7 +5,7 @@ using System.Numerics;
 namespace HECSFramework.Core
 {
     [MessagePackObject, Serializable]
-    public partial struct Vector3Serialize
+    public partial struct Vector3Serialize : IEquatable<Vector3Serialize>
     {
         [Key(0)]
         public float X;
@@ -33,5 +33,11 @@ namespace HECSFramework.Core
 
         public Vector2 AsNumericsVector2() 
             => new Vector2(X, Z);
+
+        public override string ToString()
+            => $"({X}, {Y}, {Z})";
+
+        public bool Equals(Vector3Serialize other)
+            => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
     }
 }

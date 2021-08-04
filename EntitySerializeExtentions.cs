@@ -16,22 +16,25 @@ namespace HECSFramework.Core
             return copy;
         }
 
-        public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool addComponent = true)
+        public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool forceAdd = true)
         {
             foreach (var c in entityResolver.Components)
             {
                 var componentResolver = c;
-                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, addComponent);
+                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, forceAdd);
             }
 
-            foreach (var s in entityResolver.Systems)
+            if (forceAdd)
             {
-                var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
+                foreach (var s in entityResolver.Systems)
+                {
+                    var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
 
-                if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
-                    continue;
+                    if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
+                        continue;
 
-                entity.AddHecsSystem(newSys);
+                    entity.AddHecsSystem(newSys);
+                }
             }
 
             entity.SetGuid(entityResolver.Guid);

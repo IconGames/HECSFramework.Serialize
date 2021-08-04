@@ -2,19 +2,9 @@
 
 namespace Components
 {
-    public partial class AppVersionComponent : IBeforeSerializationComponent, IAfterSerializationComponent
+    public partial class AppVersionComponent 
     {
         [Field(0)]
-        public int VersionSerialize { get; set; }
-        
-        public void AfterSync()
-        {
-            Version = VersionSerialize;
-        }
-
-        public void BeforeSync()
-        {
-            VersionSerialize = Version;
-        }
+        public int Version { get => version; set => version = value; }
     }
 }
