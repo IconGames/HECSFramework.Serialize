@@ -59,22 +59,8 @@ namespace HECSFramework.Core
 
         partial void LoadDataFromContainerSwitch(ResolverDataContainer dataContainerForResolving, int worldIndex);
 
-        public IEntity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0)
-        {
-            var unpack = new UnPackEntityResolver(entityResolver);
-            var actorID = unpack.Components.FirstOrDefault(x => x is ActorContainerID containerID);
-            IEntity entity;
-
-            if (actorID != null)
-                entity = new Entity((actorID as ActorContainerID).ID, worldIndex);
-            else
-                entity = new Entity("LoadedFromResolver", worldIndex);
-
-            entity.SetGuid(entityResolver.Guid);
-            unpack.InitEntity(entity);
-            return entity;
-        }
-
+        public IEntity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
+        
         private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {
             return new ResolverDataContainer

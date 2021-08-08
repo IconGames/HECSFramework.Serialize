@@ -58,6 +58,16 @@ namespace HECSFramework.Core
             return entity;
         }
 
+        public static List<EntityResolver> GetResolversFromEntitiesList(this List<IEntity> entities)
+        {
+            var list = new List<EntityResolver>(8);
+
+            foreach (var entity in entities)
+                list.Add(new EntityResolver().GetEntityResolver(entity));
+
+            return list;
+        }
+
         public static Task LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
         {
             foreach (var c in entityResolver.Components)
@@ -98,6 +108,14 @@ namespace HECSFramework.Core
                 list.Add(new EntityResolver().GetEntityResolver(e));
 
             return list;
+        }
+
+        public static void GetEntityResolvers(this List<IEntity> entities, ref List<EntityResolver> list)
+        {
+            list.Clear();
+
+            foreach (var e in entities)
+                list.Add(new EntityResolver().GetEntityResolver(e));
         }
     }
 }
