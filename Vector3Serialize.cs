@@ -34,6 +34,12 @@ namespace HECSFramework.Core
         public Vector2 AsNumericsVector2() 
             => new Vector2(X, Z);
 
+        [IgnoreMember]
+        public static Vector3Serialize Zero => new Vector3Serialize(0, 0, 0);
+        
+        [IgnoreMember]
+        public static Vector3Serialize One => new Vector3Serialize(0, 0, 0);
+
         public override string ToString()
             => $"({X}, {Y}, {Z})";
 

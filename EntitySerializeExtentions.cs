@@ -7,7 +7,7 @@ namespace HECSFramework.Core
 {
     public static class EntitySerializeExtentions
     {
-        public static IEntity CopyEntity (this IEntity entity)
+        public static IEntity CopyEntity(this IEntity entity)
         {
             var save = new EntityResolver().GetEntityResolver(entity);
             var copy = new Entity(entity.ID);
@@ -46,7 +46,7 @@ namespace HECSFramework.Core
             var id = data.Components.FirstOrDefault(x => x is ActorContainerID) as ActorContainerID;
 
             Entity entity;
-            
+
             if (id != null)
                 entity = new Entity(id.ID, worldIndex);
             else
@@ -75,16 +75,18 @@ namespace HECSFramework.Core
                 var componentResolver = c;
                 EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, true);
             }
-                
+
             foreach (var s in entityResolver.Systems)
             {
                 var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
 
+                if (newSys == null)
+                    continue;
+
                 if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
                     continue;
 
-                if (newSys != null)
-                    entity.AddHecsSystem(newSys);
+                entity.AddHecsSystem(newSys);
             }
 
             return Task.CompletedTask;
