@@ -55,6 +55,7 @@ namespace HECSFramework.Core
             data.InitEntity(entity);
             entity.SetGuid(entityResolver.Guid);
 
+            entity.IsLoaded = true;
             return entity;
         }
 
@@ -118,6 +119,14 @@ namespace HECSFramework.Core
 
             foreach (var e in entities)
                 list.Add(new EntityResolver().GetEntityResolver(e));
+        }
+
+        public static IEntity GetEntity(this UnPackEntityResolver unpackedEntityResolver)
+        {
+            unpackedEntityResolver.TryGetComponent<ActorContainerID>(out var id);
+            var copy = new Entity(id.ID);
+            unpackedEntityResolver.InitEntity(copy);
+            return copy.CopyEntity();
         }
     }
 }

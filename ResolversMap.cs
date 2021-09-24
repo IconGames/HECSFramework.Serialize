@@ -14,10 +14,7 @@ namespace HECSFramework.Core
 
     public partial class ResolversMap
     {
-        private Dictionary<int, IResolverProvider> resolvers;
-
         private GetContainer<IComponent> GetComponentContainerFunc;
-        private static bool isMessagePackInited;
 
         /// <summary>
         /// Factory resolver data containers to components
@@ -38,7 +35,10 @@ namespace HECSFramework.Core
                 if (TypesMap.GetComponentInfo(resolverDataContainer.TypeHashCode, out var mask))
                 {
                     if (!entity.ContainsMask(ref mask.ComponentsMask))
-                        entity.AddHecsComponent(TypesMap.GetComponentFromFactory(resolverDataContainer.TypeHashCode));
+                    {
+                        var component = GetComponentFromContainer(resolverDataContainer);
+                        entity.AddHecsComponent(component);
+                    }
                 }
             }
 

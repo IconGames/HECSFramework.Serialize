@@ -4,4 +4,9 @@
     {
         void AfterSync();
     }
+
+    public interface IAfterInitSync 
+    {
+        void AfterInitSync();
+    }
 }

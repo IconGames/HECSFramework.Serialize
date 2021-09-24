@@ -30,6 +30,22 @@ namespace HECSFramework.Core
             }
         }
 
+        public bool TryGetComponent<T>(out T component) where T : IComponent
+        {
+            for (int i = 0; i < Components.Count; i++)
+            {
+                IComponent c = Components[i];
+                if (c is T needed)
+                {
+                    component = needed;
+                    return true;
+                }
+            }
+
+            component = default;
+            return false;
+        }
+
         public void InitEntity(IEntity entity)
         {
             foreach (var c in Components)
