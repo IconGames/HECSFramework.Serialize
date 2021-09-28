@@ -7,20 +7,23 @@ namespace Components
 {
     public partial class PredicatesComponent : IBeforeSerializationComponent, IAfterSerializationComponent
     {
-            [Field(0)] public byte[] savePredicates;
+        [Field(0)] public byte[] savePredicates;
 
-            public void AfterSync()
-            {
-                Predicates = MessagePackSerializer.Deserialize<List<IPredicate>>(savePredicates);
-            }
+        public void AfterSync()
+        {
+            Predicates = MessagePackSerializer.Deserialize<List<IPredicate>>(savePredicates);
+        }
 
-            public void BeforeSync()
-            {
-                InitBeforeSync();
-                savePredicates = MessagePackSerializer.Serialize(Predicates);
-            }
+        public void BeforeSync()
+        {
+            InitBeforeSync();
+            savePredicates = MessagePackSerializer.Serialize(Predicates);
+        }
 
-            partial void InitBeforeSync();
+        private void InitBeforeSync()
+        {
+            Init();
+        }
     }
 
     [MessagePackObject]
@@ -41,7 +44,7 @@ namespace Components
         public IPredicate GetPredicate()
         {
             var t = (IPredicate)Activator.CreateInstance(Type);
-            return  GetPredicate(t);
+            return GetPredicate(t);
         }
 
         private IPredicate GetPredicate<T>(T predicate) where T : IPredicate

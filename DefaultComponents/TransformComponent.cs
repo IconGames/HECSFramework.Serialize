@@ -9,7 +9,5 @@ namespace Components
 
         [Field(1)]
         public Vector3Serialize RotationSave;
-
-        partial void InfoUpdated();
     }
 }
