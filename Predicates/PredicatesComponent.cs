@@ -7,7 +7,7 @@ namespace Components
 {
     public partial class PredicatesComponent : IBeforeSerializationComponent, IAfterSerializationComponent
     {
-        [Field(0)] public byte[] savePredicates;
+        [Field(0)][NonSerialized] public byte[] savePredicates;
 
         public void AfterSync()
         {
