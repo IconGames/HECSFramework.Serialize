@@ -41,5 +41,30 @@ namespace HECSFramework.Core
 
         public bool Equals(Vector2Serialize other)
             => X.Equals(other.X) && Y.Equals(other.Y);
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1861411795;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            return hashCode;
+        }
+        
+        public static Vector2Serialize operator -(Vector2Serialize left, Vector2Serialize right)
+        {
+            return new Vector2Serialize(left.X - right.X, left.Y - right.Y);
+        }
+        public static Vector2Serialize operator +(Vector2Serialize left, Vector2Serialize right)
+        {
+            return new Vector2Serialize(left.X + right.X, left.Y + right.Y);
+        }
+        public static Vector2Serialize operator *(Vector2Serialize source, float value)
+        {
+            return new Vector2Serialize(source.X * value, source.Y * value);
+        }
+        public static Vector2Serialize operator /(Vector2Serialize source, float value)
+        {
+            return new Vector2Serialize(source.X / value, source.Y / value);
+        }
     }
 }

@@ -27,7 +27,14 @@ namespace HECSFramework.Core
             Y = vector3.Y;
             Z = vector3.Z;
         }
-        
+
+        public Vector3Serialize(Vector2Serialize vector2)
+        {
+            X = vector2.X;
+            Y = 0;
+            Z = vector2.Y;
+        }
+
         public Vector3 AsNumericsVector() 
             => new Vector3(X, Y, Z);
 
@@ -44,6 +51,35 @@ namespace HECSFramework.Core
             => $"({X}, {Y}, {Z})";
 
         public bool Equals(Vector3Serialize other)
-            => X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
+        {
+            return Math.Abs(X - other.X) < 0.0001 && Math.Abs(Y - other.Y) < 0.0001 && Math.Abs(Z - other.Z) < 0.0001;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -307843816;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            hashCode = hashCode * -1521134295 + Z.GetHashCode();
+            return hashCode;
+        }
+        [IgnoreMember]
+        public float sqrMagnitude => X * X + Y * Y + Z * Z;
+        public static Vector3Serialize operator -(Vector3Serialize left, Vector3Serialize right)
+        {
+            return new Vector3Serialize(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        }
+        public static Vector3Serialize operator +(Vector3Serialize left, Vector3Serialize right)
+        {
+            return new Vector3Serialize(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        }
+        public static Vector3Serialize operator *(Vector3Serialize source, float value)
+        {
+            return new Vector3Serialize(source.X * value, source.Y * value, source.Z * value);
+        }
+        public static Vector3Serialize operator /(Vector3Serialize source, float value)
+        {
+            return new Vector3Serialize(source.X / value, source.Y / value, source.Z / value);
+        }
     }
 }

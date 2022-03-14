@@ -16,9 +16,12 @@ namespace HECSFramework.Core
             foreach (var c in entityResolver.Components)
             {
                 var component = EntityManager.ResolversMap.GetComponentFromContainer(c);
-
                 if (component != null)
+                {
                     Components.Add(component);
+                    component.ComponentsMask =
+                        TypesMap.GetComponentInfo(component.GetTypeHashCode, out var info) ? info.ComponentsMask : HECSMask.Empty;
+                }
             }
 
             foreach (var s in entityResolver.Systems)

@@ -1,0 +1,22 @@
+﻿namespace HECSFramework.Serialize
+{
+    public abstract partial class AnimatorParameter<T> : AnimatorParameter
+    {
+        public T Value { get; protected set; }
+
+        protected AnimatorParameter(int parameterID) : base(parameterID)
+        {
+        }
+
+        public void Set(T value)
+        {
+            if (value.Equals(Value)) return;
+            IsDirty = true;
+            LocalSet(value);
+            SetValueToAnimator();
+        }
+
+        protected abstract void LocalSet(T value);
+        protected virtual void SetValueToAnimator() { }
+    }
+}

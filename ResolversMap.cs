@@ -1,5 +1,9 @@
-﻿using MessagePack;
+﻿using Components;
+using MessagePack;
+using MessagePack.Resolvers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial interface IData { }
 
@@ -56,6 +60,7 @@ namespace HECSFramework.Core
         partial void LoadDataFromContainerSwitch(ResolverDataContainer dataContainerForResolving, int worldIndex);
 
         public IEntity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
+        public EntityModel GetEntityModelFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityModelFromResolver();
         
         private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {
@@ -93,40 +98,5 @@ namespace HECSFramework.Core
         public bool IsSyncSelf;
     }
 
-    public interface IResolverProvider
-    {
-        ResolverDataContainer GetDataContainer<T>(T data);
-        void ResolveData(ResolverDataContainer data, ref IEntity entity);
-    }
-
-    public interface IResolver
-    {
-        void Out(ref IEntity entity);
-    }
-
-    public interface IResolver<T> : IResolver
-    {
-        void Out(ref T data);
-    }
-
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class FieldAttribute : Attribute
-    {
-        public readonly int Queue;
-
-        public FieldAttribute(int queue)
-        {
-            Queue = queue;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class GenerateResolverAttribute : Attribute
-    {
-    }
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    public class CustomResolverAttribute : Attribute
-    {
-    }
+   
 }

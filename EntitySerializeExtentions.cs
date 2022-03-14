@@ -59,6 +59,15 @@ namespace HECSFramework.Core
             return entity;
         }
 
+        public static EntityModel GetEntityModelFromResolver(this EntityResolver entityResolver, int worldIndex = 0)
+        {
+            var data = new UnPackEntityResolver(entityResolver);
+            var entity = new EntityModel(worldIndex, ""); //todo think about  stringName
+            data.InitEntity(entity);
+            entity.SetGuid(entityResolver.Guid);
+            return entity;
+        }
+
         public static List<EntityResolver> GetResolversFromEntitiesList(this List<IEntity> entities)
         {
             var list = new List<EntityResolver>(8);
@@ -103,7 +112,27 @@ namespace HECSFramework.Core
             return list;
         }
 
+        public static List<EntityModel> GetEntitiesModelsFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
+        {
+            var list = new List<EntityModel>(entitiesResolvers.Count);
+
+            foreach (var e in entitiesResolvers)
+                list.Add(EntityManager.ResolversMap.GetEntityModelFromResolver(e, worldIndex));
+
+            return list;
+        }
+
         public static List<EntityResolver> GetEntityResolvers(this List<IEntity> entities)
+        {
+            var list = new List<EntityResolver>(entities.Count);
+
+            foreach (var e in entities)
+                list.Add(new EntityResolver().GetEntityResolver(e));
+
+            return list;
+        }
+        
+        public static List<EntityResolver> GetEntityResolvers(this List<EntityModel> entities)
         {
             var list = new List<EntityResolver>(entities.Count);
 

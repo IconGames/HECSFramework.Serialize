@@ -5,7 +5,7 @@ using MessagePack;
 
 namespace Components
 {
-    [CustomResolver]
+    [HECSResolver]
     public partial class ActorContainerID
     {
     }

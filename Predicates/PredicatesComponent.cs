@@ -1,13 +1,14 @@
-﻿using HECSFramework.Core;
-using MessagePack;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using HECSFramework.Core;
+using MessagePack;
 
 namespace Components
 {
     public partial class PredicatesComponent : IBeforeSerializationComponent, IAfterSerializationComponent
     {
-        [Field(0)][NonSerialized] public byte[] savePredicates;
+        [HideInInspectorCrossPlatform]
+        [Field(0)] public byte[] savePredicates;
 
         public void AfterSync()
         {
@@ -20,10 +21,7 @@ namespace Components
             savePredicates = MessagePackSerializer.Serialize(Predicates);
         }
 
-        private void InitBeforeSync()
-        {
-            Init();
-        }
+        partial void InitBeforeSync();
     }
 
     [MessagePackObject]

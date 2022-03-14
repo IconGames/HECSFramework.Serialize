@@ -23,7 +23,7 @@ namespace HECSFramework.Core.Generator
 
             foreach (var c in componentTypes)
             {
-                var attr2 = c.GetCustomAttribute(typeof(CustomResolverAttribute));
+                var attr2 = c.GetCustomAttribute(typeof(HECSResolverAttribute));
 
                 if (attr2 != null)
                 {
