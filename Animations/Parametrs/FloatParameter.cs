@@ -8,6 +8,10 @@ namespace HECSFramework.Serialize
         {
         }
 
+        public FloatParameter(int parameterID, float value) : base(parameterID, value)
+        {
+        }
+
         protected override void LocalSet(float value)
         {
             Value = value;

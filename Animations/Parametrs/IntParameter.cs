@@ -6,6 +6,10 @@
         {
         }
 
+        public IntParameter(int parameterID, int value) : base(parameterID, value)
+        {
+        }
+
         protected override void LocalSet(int value)
         {
             Value = value;

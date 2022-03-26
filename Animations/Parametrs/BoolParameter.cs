@@ -6,6 +6,10 @@
         {
         }
 
+        public BoolParameter(int parameterID, bool value) : base(parameterID, value)
+        {
+        }
+
         protected override void LocalSet(bool value)
         {
             Value = value;

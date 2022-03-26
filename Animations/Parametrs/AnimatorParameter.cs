@@ -2,12 +2,12 @@
 {
     public abstract partial class AnimatorParameter
     {
-        protected int parameterHashCode;
+        public int ParameterAnimatorHashCode { get; protected set; }    
         public bool IsDirty;
 
         public AnimatorParameter(int parameterID)
         {
-            parameterHashCode = parameterID;
+            ParameterAnimatorHashCode = parameterID;
         }
     }
 }

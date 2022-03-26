@@ -1,11 +1,16 @@
 ﻿namespace HECSFramework.Serialize
 {
-    public abstract partial class AnimatorParameter<T> : AnimatorParameter
+    public abstract partial class AnimatorParameter<T> : AnimatorParameter 
     {
         public T Value { get; protected set; }
 
         protected AnimatorParameter(int parameterID) : base(parameterID)
         {
+        }
+
+        public AnimatorParameter (int parameterID, T value) : base(parameterID)
+        {
+            Value = value;
         }
 
         public void Set(T value)

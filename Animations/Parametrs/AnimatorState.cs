@@ -1,16 +1,30 @@
 ﻿using System.Collections.Generic;
+using MessagePack;
 
 namespace HECSFramework.Serialize
 {
-    [HECSResolver]
-    public class AnimatorState
+    public partial class AnimatorState : ISaveToResolver<AnimatorStateResolver>, ILoadFromResolver<AnimatorStateResolver>
     {
-        Dictionary<int, AnimatorParameter<bool>> boolParameters = new Dictionary<int, AnimatorParameter<bool>>();
-        Dictionary<int, AnimatorParameter<float>> floatParameters = new Dictionary<int, AnimatorParameter<float>>();
-        Dictionary<int, AnimatorParameter<int>> intParameters = new Dictionary<int, AnimatorParameter<int>>();
+        private Dictionary<int, BoolParameter> boolParameters = new Dictionary<int, BoolParameter>();
+        private Dictionary<int, FloatParameter> floatParameters = new Dictionary<int, FloatParameter>();
+        private Dictionary<int, IntParameter> intParameters = new Dictionary<int, IntParameter>();
 
-        public bool IsBoolDirty { get; protected set; }
         public int AnimatorID { get; protected set; }
+
+
+        #region Constructor
+        public AnimatorState() 
+        {
+        }
+
+        public AnimatorState(int animatorID, Dictionary<int, BoolParameter> boolParameters, Dictionary<int, FloatParameter> floatParameters, Dictionary<int, IntParameter> intParameters)
+        {
+            AnimatorID = animatorID;
+            this.boolParameters = boolParameters;
+            this.floatParameters = floatParameters;
+            this.intParameters = intParameters;
+        }
+        #endregion
 
         public void SetBool(int id, bool value)
         {
@@ -26,5 +40,48 @@ namespace HECSFramework.Serialize
         {
             intParameters[id].Set(value);
         }
+
+        #region SaveLoad
+        public void Load(ref AnimatorStateResolver resolver)
+        {
+            foreach (var bp in resolver.BoolStates)
+            {
+                if (boolParameters.ContainsKey(bp.Key))
+                    boolParameters[bp.Key].Set(bp.Value.Value);
+                else
+                    boolParameters.Add(bp.Key, new BoolParameter(bp.Key, bp.Value.Value));
+            }
+
+            foreach (var bp in resolver.IntStates)
+            {
+                if (intParameters.ContainsKey(bp.Key))
+                    intParameters[bp.Key].Set(bp.Value.Value);
+                else
+                    intParameters.Add(bp.Key, new IntParameter(bp.Key, bp.Value.Value));
+            }
+
+            foreach (var bp in resolver.FloatStates)
+            {
+                if (floatParameters.ContainsKey(bp.Key))
+                    floatParameters[bp.Key].Set(bp.Value.Value);
+                else
+                    floatParameters.Add(bp.Key, new FloatParameter(bp.Key, bp.Value.Value));
+            }
+
+            AnimatorID = resolver.AnimatorID;
+        }
+
+        public void Save(ref AnimatorStateResolver resolver)
+        {
+            foreach (var bp in boolParameters)
+                resolver.BoolStates.Add(bp.Key, new BoolParameterResolver { Value = bp.Value.Value });
+
+            foreach (var bp in intParameters)
+                resolver.IntStates.Add(bp.Key, new IntParameterResolver { Value = bp.Value.Value });
+
+            foreach (var bp in floatParameters)
+                resolver.FloatStates.Add(bp.Key, new FloatParameterResolver { Value = bp.Value.Value });
+        }
+        #endregion
     }
 }
