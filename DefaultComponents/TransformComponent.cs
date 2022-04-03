@@ -11,5 +11,7 @@ namespace Components
         [HideInInspectorCrossPlatform]
         [Field(1)]
         public Vector3Serialize RotationSave;
+
+        public bool IsDirty = false;
     }
 }
