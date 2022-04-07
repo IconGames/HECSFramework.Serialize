@@ -1,11 +1,10 @@
-﻿using HECSFramework.Core;
+﻿using System;
 using Components;
-using System;
 using MessagePack;
 
 namespace Components
 {
-    [HECSResolver]
+    [HECSDefaultResolver]
     public partial class ActorContainerID
     {
     }
@@ -13,11 +12,11 @@ namespace Components
 
 namespace HECSFramework.Core
 {
-	[MessagePackObject, Serializable]
+    [MessagePackObject, Serializable]
 	public struct ActorContainerIDResolver : IResolver<ActorContainerID>, IData
 	{
 		[Key(0)]
-		public String ID;
+		public string ID;
 
 		public ActorContainerIDResolver In(ref ActorContainerID actorcontainerid)
 		{

@@ -20,3 +20,8 @@ public class HECSResolverAttribute : Attribute
         ResolverProvider = resolverProvider;
     }
 }
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class HECSDefaultResolverAttribute : Attribute
+{
+}
