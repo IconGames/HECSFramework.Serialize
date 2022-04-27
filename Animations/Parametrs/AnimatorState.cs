@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using MessagePack;
+using HECSFramework.Core;
 
 namespace HECSFramework.Serialize
 {
+    [Documentation(Doc.HECS, Doc.Animation, "this component holds animation state and links identifiers id to AnimatorHashID")]
     public partial class AnimatorState : ISaveToResolver<AnimatorStateResolver>, ILoadFromResolver<AnimatorStateResolver>
     {
         private Dictionary<int, BoolParameter> boolParameters = new Dictionary<int, BoolParameter>();
@@ -10,7 +11,6 @@ namespace HECSFramework.Serialize
         private Dictionary<int, IntParameter> intParameters = new Dictionary<int, IntParameter>();
 
         public int AnimatorID { get; protected set; }
-
 
         #region Constructor
         public AnimatorState() 
