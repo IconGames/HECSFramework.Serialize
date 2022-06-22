@@ -12,6 +12,6 @@ namespace Components
         [Field(1)]
         public Vector3Serialize RotationSave;
 
-        public bool IsDirty = false;
+        public bool IsDirty { get; set; }
     }
 }
