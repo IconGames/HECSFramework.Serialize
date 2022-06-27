@@ -37,6 +37,9 @@ namespace HECSFramework.Core
 
                 entity.AddHecsSystem(system, entity);
             }
+
+            var resolver = new EntityResolver().GetEntityResolver(entity);
+            entityForInit.LoadEntityFromResolver(resolver);
         }
     }
 }
