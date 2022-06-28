@@ -1,11 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Components;
 
 namespace HECSFramework.Core
 {
-    public struct UnPackEntityResolver
+    public struct UnPackEntityResolver : IEntityContainer
     {
         public List<IComponent> Components;
         public List<ISystem> Systems;
+
+        public string ContainerID
+        {
+            get
+            {
+                var needed = Components.FirstOrDefault(x=> x is ActorContainerID actorContainerID) as ActorContainerID;
+
+                if (needed != null)
+                    return needed.ID;
+
+                return "Dont have id";
+            }
+        }
 
         public UnPackEntityResolver(EntityResolver entityResolver)
         {
@@ -49,7 +64,7 @@ namespace HECSFramework.Core
             return false;
         }
 
-        public void InitEntity(IEntity entity)
+        public void Init(IEntity entity)
         {
             foreach (var c in Components)
             {

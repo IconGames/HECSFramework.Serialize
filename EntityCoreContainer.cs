@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HECSFramework.Core
 {
-    public abstract class EntityCoreContainer
+    public abstract class EntityCoreContainer : IEntityContainer
     {
         public abstract string ContainerID { get; }
         public List<IComponent> Components = new List<IComponent>();
@@ -18,7 +18,7 @@ namespace HECSFramework.Core
         protected abstract List<IComponent> GetComponents();
         protected abstract List<ISystem> GetSystems();
 
-        public virtual void Init(IEntity entityForInit, bool pure = false)
+        public virtual void Init(IEntity entityForInit)
         {
             var entity = new Entity(ContainerID);
             entity.AddHecsComponent(new ActorContainerID { ID = ContainerID });

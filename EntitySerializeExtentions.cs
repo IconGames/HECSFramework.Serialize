@@ -12,7 +12,7 @@ namespace HECSFramework.Core
             var save = new EntityResolver().GetEntityResolver(entity);
             var copy = new Entity(entity.ID);
             var unpack = new UnPackEntityResolver(save);
-            unpack.InitEntity(copy);
+            unpack.Init(copy);
             return copy;
         }
 
@@ -52,7 +52,7 @@ namespace HECSFramework.Core
             else
                 entity = new Entity(entityResolver.Guid.ToString());
 
-            data.InitEntity(entity);
+            data.Init(entity);
             entity.SetGuid(entityResolver.Guid);
 
             entity.IsLoaded = true;
@@ -63,7 +63,7 @@ namespace HECSFramework.Core
         {
             var data = new UnPackEntityResolver(entityResolver);
             var entity = new EntityModel(worldIndex, ""); //todo think about  stringName
-            data.InitEntity(entity);
+            data.Init(entity);
             entity.SetGuid(entityResolver.Guid);
             return entity;
         }
@@ -154,7 +154,7 @@ namespace HECSFramework.Core
         {
             unpackedEntityResolver.TryGetComponent<ActorContainerID>(out var id);
             var copy = new Entity(id.ID);
-            unpackedEntityResolver.InitEntity(copy);
+            unpackedEntityResolver.Init(copy);
             return copy.CopyEntity();
         }
     }
