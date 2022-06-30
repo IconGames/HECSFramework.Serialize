@@ -157,5 +157,50 @@ namespace HECSFramework.Core
             unpackedEntityResolver.Init(copy);
             return copy.CopyEntity();
         }
+
+        /// <summary>
+        /// Get Entity from core container
+        /// </summary>
+        /// <param name="entityCoreContainer">Core contaner</param>
+        /// <param name="entityName">Just name for understanding what kind of entity is it, if u dont assign any value, we take name from container </param>
+        /// <param name="worldIndex">u should provide index of world</param>
+        /// <returns></returns>
+        public static Entity GetEntityFromCoreContainer(this EntityCoreContainer entityCoreContainer, int worldIndex = 0, string entityName = default)
+        {
+            Entity entity = null;
+
+            if (entityCoreContainer == null)
+            {
+                HECSDebug.LogError("container is null");
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(entityName))
+                entity = new Entity(entityName, worldIndex);
+            else
+                entity = new Entity(entityCoreContainer.ContainerID, worldIndex);
+
+            entityCoreContainer.Init(entity);
+            return entity;
+        }
+
+        public static Entity GetEntityFromCoreContainer(this IEntityContainer entityCoreContainer, int worldIndex = 0, string entityName = default)
+        {
+            Entity entity = null;
+
+            if (entityCoreContainer == null)
+            {
+                HECSDebug.LogError("container is null");
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(entityName))
+                entity = new Entity(entityName, worldIndex);
+            else
+                entity = new Entity(entityCoreContainer.ContainerID, worldIndex);
+
+            entityCoreContainer.Init(entity);
+            return entity;
+        }
     }
 }
