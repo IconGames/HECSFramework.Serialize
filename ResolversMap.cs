@@ -1,20 +1,22 @@
-﻿using Components;
-using MessagePack;
-using MessagePack.Resolvers;
-using System;
+﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
-using System.Linq;
+using MessagePack;
 
 public partial interface IData { }
 
 namespace HECSFramework.Core
 {
     public delegate void ProcessResolverContainer(ref ResolverDataContainer dataContainerForResolving, ref IEntity entity);
+    public delegate void ProcessReadOnlyMemoryToComponent(ref ReadOnlyMemory<byte> dataContainerForResolving, int typeHashCode, IEntity entity);
+    
     public delegate ResolverDataContainer GetContainer<T>(T component) where T : IComponent;
+    public delegate IComponent GetComponentFromMemory (ref ReadOnlyMemory<byte> dataContainerForResolving, int componentTypeCode);
 
     public partial class ResolversMap
     {
         private GetContainer<IComponent> GetComponentContainerFunc;
+        private Dictionary<Type, IResolverProvider> resolverProviders;
 
         /// <summary>
         /// Factory resolver data containers to components
@@ -48,6 +50,27 @@ namespace HECSFramework.Core
         public ResolverDataContainer GetSystemContainer<T>(T system) where T: ISystem
         {
             return new ResolverDataContainer { Data = null, EntityGuid = system.Owner.GUID, Type = 1, TypeHashCode = system.GetTypeHashCode };
+        }
+
+        public T GetResolver<T,U>(U obj) where T: IResolver<U>
+        {
+            if (obj == null)
+            {
+                HECSDebug.LogError("null object on argument");
+                return default;
+            }
+
+            var key = typeof (T);
+            if (resolverProviders.TryGetValue(key, out var provider))
+            {
+                var providerCast = provider as IResolverProvider<T, U>;
+                return providerCast.GetDataContainer(obj);
+            }
+            else
+            {
+                HECSDebug.LogError("we dont have resolver provider for " + key.Name + " check codogen first");
+                return default;
+            }
         }
 
         public ISystem GetSystemFromContainer(ResolverDataContainer resolverDataContainer)
@@ -97,6 +120,4 @@ namespace HECSFramework.Core
         [Key(4)]
         public bool IsSyncSelf;
     }
-
-   
 }

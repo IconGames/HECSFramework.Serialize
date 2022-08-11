@@ -16,6 +16,15 @@ namespace HECSFramework.Core
             return copy;
         }
 
+        public static IEntity CopyEntity(this IEntity entity, World world)
+        {
+            var save = new EntityResolver().GetEntityResolver(entity);
+            var copy = new Entity(entity.ID, world);
+            var unpack = new UnPackEntityResolver(save);
+            unpack.Init(copy);
+            return copy;
+        }
+
         public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool forceAdd = true)
         {
             foreach (var c in entityResolver.Components)
@@ -203,7 +212,7 @@ namespace HECSFramework.Core
             return entity;
         }
 
-        public static Entity GetEntityFromCoreContainer(this IEntityContainer entityCoreContainer, World world, string entityName = default)
+        public static IEntity GetEntityFromCoreContainer(this IEntityContainer entityCoreContainer, World world, string entityName = default)
         {
             Entity entity = null;
 
@@ -219,7 +228,9 @@ namespace HECSFramework.Core
                 entity = new Entity(entityCoreContainer.ContainerID, world);
 
             entityCoreContainer.Init(entity);
-            return entity;
+            var copy = entity.CopyEntity(world);
+            copy.GenerateGuid();
+            return copy;
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using HECSFramework.Core;
-
-
-public interface IResolverProvider
+﻿public interface IResolverProvider
 {
-    ResolverDataContainer GetDataContainer<T>(T data);
-    void ResolveData(ResolverDataContainer data, ref IEntity entity);
+}
+
+public interface IResolverProvider<T, U>  : IResolverProvider where T: IResolver<U>
+{
+    T GetDataContainer(U data); 
 }

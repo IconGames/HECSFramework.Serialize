@@ -22,6 +22,20 @@ public class HECSResolverAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class HECSManualResolverAttribute : Attribute
+{
+    /// <summary>
+    /// here we need to mention of type we should be resolved
+    /// </summary>
+    public Type ResolvedType;
+
+    public HECSManualResolverAttribute(Type resolvedType)
+    {
+        ResolvedType = resolvedType;
+    }
+}
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class HECSDefaultResolverAttribute : Attribute
 {
 }

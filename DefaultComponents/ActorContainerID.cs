@@ -1,5 +1,6 @@
 ﻿using System;
 using Components;
+using HECSFramework.Serialize;
 using MessagePack;
 
 namespace Components
@@ -13,7 +14,7 @@ namespace Components
 namespace HECSFramework.Core
 {
     [MessagePackObject, Serializable]
-	public struct ActorContainerIDResolver : IResolver<ActorContainerID>, IData
+	public struct ActorContainerIDResolver : IResolver<ActorContainerID>, IResolver<ActorContainerIDResolver, ActorContainerID>, IData
 	{
 		[Key(0)]
 		public string ID;

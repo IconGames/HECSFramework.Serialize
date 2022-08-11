@@ -6,13 +6,25 @@ namespace HECSFramework.Core
     public abstract class EntityCoreContainer : IEntityContainer
     {
         public abstract string ContainerID { get; }
-        public List<IComponent> Components = new List<IComponent>();
-        public List<ISystem> Systems = new List<ISystem>();
+        private List<IComponent> cachedComponents;
+        private List<ISystem> cachedSystems;
 
-        public EntityCoreContainer()
+        public List<IComponent> Components
         {
-            Components = GetComponents();
-            Systems = GetSystems();
+            get
+            {
+                cachedComponents ??= GetComponents();
+                return cachedComponents;
+            }
+        }
+
+        public List<ISystem> Systems
+        {
+            get
+            {
+                cachedSystems ??= GetSystems();
+                return cachedSystems;
+            }
         }
 
         protected abstract List<IComponent> GetComponents();
