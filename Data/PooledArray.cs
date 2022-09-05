@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using System;
+using System.Buffers;
 
 namespace HECSFramework.Serialize
 {
@@ -44,6 +45,18 @@ namespace HECSFramework.Serialize
 
             data.IsValid = true;
             return data;
+        }
+
+        /// <summary>
+        /// we release here pooled array and return its copy
+        /// </summary>
+        /// <returns>new array with copy of data</returns>
+        public byte[] ToArray()
+        {
+            var newArray = new byte[Length];
+            Array.Copy(Data, newArray, Length);
+            Release();
+            return newArray;
         }
     }
 }

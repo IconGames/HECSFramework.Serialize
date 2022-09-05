@@ -12,12 +12,17 @@ namespace HECSFramework.Core
 
         public byte[] SerializeCustom<T>(T data)
         {
-            var key = typeof(T);
+            var key = data.GetType();
 
             if (typeToCustomResolver.TryGetValue(key, out var resolverProvider))
                 return resolverProvider.Serialize(data);
 
             throw new Exception($"we dont have needed resolver for {key.Name}, mby u forgot run codogen?");
+        }
+
+        public Type GetTypeByIndex(int index)
+        {
+            return getTypeIndexToType[index];
         }
 
         public T Deserialize<T>(byte[] data)

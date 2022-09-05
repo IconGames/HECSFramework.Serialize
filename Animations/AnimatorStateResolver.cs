@@ -32,7 +32,7 @@ namespace HECSFramework.Serialize
         public void Out(ref AnimatorState data)
         {
             data.Load(ref this);
-        }
+        } 
 
         public void Out(ref IEntity entity)
         {
