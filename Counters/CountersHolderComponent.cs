@@ -5,7 +5,6 @@ namespace Components
 {
     public sealed partial class CountersHolderComponent : BaseComponent, IBeforeSerializationComponent, IAfterSerializationComponent
     {
-        [Field(0)]
         public List<ICounter> countersToSave = new List<ICounter>(16);
 
         public void AfterSync()
