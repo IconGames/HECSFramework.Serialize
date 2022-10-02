@@ -28,7 +28,8 @@ namespace HECSFramework.Serialize
 
         public void SetBool(int id, bool value)
         {
-            boolParameters[id].Set(value);
+            if (boolParameters.ContainsKey(id))
+                boolParameters[id].Set(value);
         }
 
         public void SetFloat(int id, float value)
