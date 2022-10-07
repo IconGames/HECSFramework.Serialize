@@ -42,6 +42,11 @@ namespace HECSFramework.Serialize
             intParameters[id].Set(value);
         }
 
+        public bool TryGetBool(int id ,out BoolParameter value)
+        {
+            return boolParameters.TryGetValue(id, out value);
+        }
+
         #region SaveLoad
         public void Load(ref AnimatorStateResolver resolver)
         {
