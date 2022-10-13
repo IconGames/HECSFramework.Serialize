@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HECSFramework.Serialize;
+using Strategies;
 
 namespace HECSFramework.Core
 {
@@ -52,7 +53,7 @@ namespace HECSFramework.Core
         }
     }
 
-    public class CustomResolverProvider<TypeToResolve, Resolver> : CustomResolverProviderBase where Resolver : IResolver<Resolver, TypeToResolve>, new() where TypeToResolve : new()
+    public partial class CustomResolverProvider<TypeToResolve, Resolver> : CustomResolverProviderBase where Resolver : IResolver<Resolver, TypeToResolve>, new() where TypeToResolve : new()
     {
         public readonly int TypeCode = IndexGenerator.GetIndexForType(typeof(TypeToResolve));
 
@@ -119,7 +120,7 @@ namespace HECSFramework.Core
         }
     }
 
-    public abstract class CustomResolverProviderBase
+    public abstract partial class CustomResolverProviderBase
     {
         public abstract byte[] Serialize<T>(T data);
 

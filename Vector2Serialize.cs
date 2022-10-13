@@ -12,6 +12,7 @@ namespace HECSFramework.Core
         [Key(1)]
         public float Y;
 
+        [MessagePack.SerializationConstructor]
         public Vector2Serialize(float x, float y)
         {
             X = x;

@@ -22,6 +22,11 @@ public class HECSResolverAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+public class PrivateFieldsIncludedAttribute : Attribute
+{
+}
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class HECSManualResolverAttribute : Attribute
 {
     /// <summary>

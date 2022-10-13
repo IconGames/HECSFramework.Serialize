@@ -50,7 +50,7 @@ namespace HECSFramework.Serialize
                 get 
                 {
                     if (!IsComplete)
-                        throw new Exception("You should waint unitl is complete before taking result");
+                        throw new Exception("You should await until is complete before taking result");
 
                     return result; 
                 }

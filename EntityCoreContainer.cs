@@ -6,35 +6,18 @@ namespace HECSFramework.Core
     public abstract class EntityCoreContainer : IEntityContainer
     {
         public abstract string ContainerID { get; }
-        private List<IComponent> cachedComponents;
-        private List<ISystem> cachedSystems;
-
-        public List<IComponent> Components
-        {
-            get
-            {
-                cachedComponents ??= GetComponents();
-                return cachedComponents;
-            }
-        }
-
-        public List<ISystem> Systems
-        {
-            get
-            {
-                cachedSystems ??= GetSystems();
-                return cachedSystems;
-            }
-        }
-
-        protected abstract List<IComponent> GetComponents();
-        protected abstract List<ISystem> GetSystems();
+        public abstract List<IComponent> GetComponents();
+        public abstract List<ISystem> GetSystems();
 
         public virtual void Init(IEntity entityForInit)
         {
             var entity = new Entity(ContainerID);
             entity.AddHecsComponent(new ActorContainerID { ID = ContainerID });
-            foreach (var component in Components)
+
+            var components = GetComponents();
+            var systems = GetSystems();
+
+            foreach (var component in components)
             {
                 if (component == null)
                     continue;
@@ -42,7 +25,7 @@ namespace HECSFramework.Core
                 entity.AddHecsComponent(component, entity);
             }
 
-            foreach (var system in Systems)
+            foreach (var system in systems)
             {
                 if (system == null)
                     continue;
