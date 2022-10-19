@@ -28,23 +28,26 @@ namespace HECSFramework.Serialize
 
         public void SetBool(int id, bool value)
         {
-            if (boolParameters.ContainsKey(id))
-                boolParameters[id].Set(value);
+            if (boolParameters.TryGetValue(id, out var parameter))
+                parameter.Set(value);
+            else
+                HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
         public void SetFloat(int id, float value)
         {
-            floatParameters[id].Set(value);
+            if (floatParameters.TryGetValue(id, out var parameter))
+                parameter.Set(value);
+            else
+                HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
         public void SetInt(int id, int value)
         {
-            intParameters[id].Set(value);
-        }
-
-        public bool TryGetBool(int id ,out BoolParameter value)
-        {
-            return boolParameters.TryGetValue(id, out value);
+            if (intParameters.TryGetValue(id, out var parameter))
+                parameter.Set(value);
+            else
+                HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
         #region SaveLoad

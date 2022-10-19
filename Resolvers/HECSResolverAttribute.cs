@@ -1,4 +1,5 @@
 ﻿using System;
+using HECSFramework.Core;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class HECSResolverAttribute : Attribute
@@ -21,9 +22,20 @@ public class HECSResolverAttribute : Attribute
     }
 }
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-public class PrivateFieldsIncludedAttribute : Attribute
+[Documentation(Doc.HECS, Doc.Attributes, "We should add this attribute when we need include private field to serialization, and this class should be partial for that ")]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
+public class PartialSerializeFieldAttribute : Attribute
 {
+    private int Order;
+    private string FieldName;
+    private string AdditionalResolver;
+
+    public PartialSerializeFieldAttribute(int order, string fieldName, string additionalResolver = null)
+    {
+        this.Order = order;
+        this.FieldName = fieldName;
+        this.AdditionalResolver = additionalResolver;
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
