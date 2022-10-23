@@ -50,6 +50,11 @@ namespace HECSFramework.Serialize
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
+        public bool TryGetBool(int id ,out BoolParameter value)
+        {
+            return boolParameters.TryGetValue(id, out value);
+        }
+
         #region SaveLoad
         public void Load(ref AnimatorStateResolver resolver)
         {
