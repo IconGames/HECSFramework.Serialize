@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HECSFramework.Core;
 using HECSFramework.Serialize;
+using MessagePack;
 
 namespace Components
 {
@@ -71,8 +72,10 @@ namespace Components
 
     }
 
+    [MessagePackObject]
     public struct CheckResolver : IResolver<CheckResolver, int>
     {
+        [Key(0)]
         public int Data;
 
         public CheckResolver In(ref int data)
