@@ -55,6 +55,11 @@ namespace HECSFramework.Serialize
             return boolParameters.TryGetValue(id, out value);
         }
 
+        public bool TryGetFloat(int id, out FloatParameter value)
+        {
+            return floatParameters.TryGetValue(id, out value);
+        }
+
         #region SaveLoad
         public void Load(ref AnimatorStateResolver resolver)
         {
