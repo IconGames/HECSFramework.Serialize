@@ -1,6 +1,10 @@
 ﻿using System;
 using HECSFramework.Core;
 
+
+/// <summary>
+/// we mark class or struct with this attribute and mark fields with field attr
+/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class HECSResolverAttribute : Attribute
 {
@@ -38,6 +42,7 @@ public class PartialSerializeFieldAttribute : Attribute
     }
 }
 
+//we use if we want manualy make custom resolver and u should provide type of resolver
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public class HECSManualResolverAttribute : Attribute
 {
