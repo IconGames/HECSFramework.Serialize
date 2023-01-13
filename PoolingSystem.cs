@@ -32,8 +32,8 @@ namespace Systems
         private int ticksToPass = 10;
 
         private ConcurrentDictionary<int, Stack<IThreadSafeComponentCopyProcessor>> poolOfProcessors = new ConcurrentDictionary<int, Stack<IThreadSafeComponentCopyProcessor>>();
-        private ConcurrencyList<IThreadSafeComponentCopyProcessor> threadSafeComponentCopyProcessors = new ConcurrencyList<IThreadSafeComponentCopyProcessor>(16);
-        private ConcurrencyList<(int time, IThreadSafeComponentCopyProcessor safeProcessor)> returnToPool = new ConcurrencyList<(int time, IThreadSafeComponentCopyProcessor safeProcessor)>(16);
+        private HECSList<IThreadSafeComponentCopyProcessor> threadSafeComponentCopyProcessors = new HECSList<IThreadSafeComponentCopyProcessor>(16);
+        private HECSList<(int time, IThreadSafeComponentCopyProcessor safeProcessor)> returnToPool = new HECSList<(int time, IThreadSafeComponentCopyProcessor safeProcessor)>(16);
         private Remover<IThreadSafeComponentCopyProcessor> removeComponentSafeOnProcess;
         private Remover<(int time, IThreadSafeComponentCopyProcessor safeProcessor)> removerReturnToPool;
 
