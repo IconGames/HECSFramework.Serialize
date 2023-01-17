@@ -31,7 +31,7 @@ namespace HECSFramework.Core
 
         public void Out(ref IEntity entity)
         {
-			var local = entity.GetHECSComponent<ActorContainerID>();
+			var local = entity.GetComponent<ActorContainerID>();
 			Out(ref local);
         }
     }

@@ -12,7 +12,7 @@ namespace HECSFramework.Core
         public virtual void Init(IEntity entityForInit)
         {
             var entity = new Entity(ContainerID);
-            entity.AddHecsComponent(new ActorContainerID { ID = ContainerID });
+            entity.AddComponent(new ActorContainerID { ID = ContainerID });
 
             var components = GetComponents();
             var systems = GetSystems();
@@ -22,7 +22,7 @@ namespace HECSFramework.Core
                 if (component == null)
                     continue;
 
-                entity.AddHecsComponent(component, entity);
+                entity.AddComponent(component);
             }
 
             foreach (var system in systems)

@@ -12,7 +12,7 @@ namespace HECSFramework.Core
         public EntityResolver TakeEntityFromWorld(IEntity entity)
         {
             var resolver = new EntityResolver().GetEntityResolver(entity);
-            entity.HecsDestroy();
+            entity.Dispose();
 
             return resolver;
         }
@@ -27,7 +27,7 @@ namespace HECSFramework.Core
             if (TryGetEntityByID(guid, out var entity))
             {
                 var resolver = new EntityResolver().GetEntityResolver(entity);
-                entity.HecsDestroy();
+                entity.Dispose();
 
                 return resolver;
             }
@@ -45,10 +45,8 @@ namespace HECSFramework.Core
         /// <returns></returns>
         public static IEntity MirgrateEntity(IEntity entity, World from, World to)
         {
-            var resolver = from.TakeEntityFromWorld(entity);
-            var newEntity = resolver.GetEntityFromResolver(to.Index);
-            newEntity.Init();
-            return newEntity;
+            to.MigrateEntityToWorld(entity);
+            return entity;
         }
 
         /// <summary>

@@ -34,8 +34,6 @@ namespace HECSFramework.Core
                 if (component != null)
                 {
                     Components.Add(component);
-                    component.ComponentsMask =
-                        TypesMap.GetComponentInfo(component.GetTypeHashCode, out var info) ? info.ComponentsMask : HECSMask.Empty;
                 }
             }
 
@@ -69,7 +67,7 @@ namespace HECSFramework.Core
             foreach (var c in Components)
             {
                 if (c != null)
-                    entity.AddHecsComponent(c);
+                    entity.AddComponent(c);
             }
 
             foreach (var s in Systems)

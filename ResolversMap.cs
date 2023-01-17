@@ -34,14 +34,11 @@ namespace HECSFramework.Core
         {
             if (checkForAvailable)
             {
-                if (TypesMap.GetComponentInfo(resolverDataContainer.TypeHashCode, out var mask))
-                {
-                    if (!entity.ContainsMask(ref mask.ComponentsMask))
+                    if (!entity.ContainsMask(resolverDataContainer.TypeHashCode))
                     {
                         var component = GetComponentFromContainer(resolverDataContainer);
-                        entity.AddHecsComponent(component);
+                        entity.AddComponent(component);
                     }
-                }
             }
 
             EntityManager.ResolversMap.ProcessResolverContainer(ref resolverDataContainer, ref entity);
@@ -83,7 +80,6 @@ namespace HECSFramework.Core
         partial void LoadDataFromContainerSwitch(ResolverDataContainer dataContainerForResolving, int worldIndex);
 
         public IEntity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
-        public EntityModel GetEntityModelFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityModelFromResolver();
         
         private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {

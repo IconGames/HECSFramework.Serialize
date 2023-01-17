@@ -36,7 +36,7 @@ namespace HECSFramework.Serialize
             {
                 component = uComponent;
                 isComplete = false;
-                typeCode = uComponent.GetTypeHashCode;
+                typeCode = TypesMap.GetIndexByType<UComponent>();
             }
 
             public void Update()
