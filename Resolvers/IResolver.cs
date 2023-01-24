@@ -2,5 +2,5 @@
 
 public interface IResolver
 {
-    void Out(ref IEntity entity);
+    void Out(ref Entity entity);
 }

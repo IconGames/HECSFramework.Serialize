@@ -2,7 +2,7 @@
 {
     public interface IEntityContainer
     {
-        public void Init(IEntity entity);
+        public void Init(Entity entity);
         public string ContainerID { get; }
     }
 }

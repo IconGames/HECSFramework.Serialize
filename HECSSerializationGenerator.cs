@@ -69,7 +69,7 @@ namespace HECSFramework.Core.Generator
             //tree.Add(new ParagraphSyntax());
             //tree.Add(defaultConstructor);
             //tree.Add(new ParagraphSyntax());
-            tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {typeof(IEntity).Name} entity)"));
+            tree.Add(new TabSimpleSyntax(2, $"public void Out(ref {typeof(Entity).Name} entity)"));
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(GetOutToEntityVoidBody(c));
             tree.Add(new RightScopeSyntax(2));
@@ -310,7 +310,7 @@ namespace HECSFramework.Core.Generator
             var caseBody = new TreeSyntaxNode();
 
             tree.Add(new ParagraphSyntax());
-            tree.Add(new TabSimpleSyntax(2, "private void ProcessResolverContainerRealisation(ref ResolverDataContainer dataContainerForResolving, ref IEntity entity)"));
+            tree.Add(new TabSimpleSyntax(2, "private void ProcessResolverContainerRealisation(ref ResolverDataContainer dataContainerForResolving, ref Entity entity)"));
             tree.Add(new LeftScopeSyntax(2));
             tree.Add(new TabSimpleSyntax(3, "switch (dataContainerForResolving.TypeHashCode)"));
             tree.Add(new LeftScopeSyntax(3));

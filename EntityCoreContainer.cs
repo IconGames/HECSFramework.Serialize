@@ -9,7 +9,7 @@ namespace HECSFramework.Core
         public abstract List<IComponent> GetComponents();
         public abstract List<ISystem> GetSystems();
 
-        public virtual void Init(IEntity entityForInit)
+        public virtual void Init(Entity entityForInit)
         {
             var entity = new Entity(ContainerID);
             entity.AddComponent(new ActorContainerID { ID = ContainerID });
@@ -30,7 +30,7 @@ namespace HECSFramework.Core
                 if (system == null)
                     continue;
 
-                entity.AddHecsSystem(system, entity);
+                entity.AddHecsSystem(system);
             }
 
             var resolver = new EntityResolver().GetEntityResolver(entity);

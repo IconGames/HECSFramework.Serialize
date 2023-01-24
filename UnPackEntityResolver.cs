@@ -62,7 +62,7 @@ namespace HECSFramework.Core
             return false;
         }
 
-        public void Init(IEntity entity)
+        public void Init(Entity entity)
         {
             foreach (var c in Components)
             {

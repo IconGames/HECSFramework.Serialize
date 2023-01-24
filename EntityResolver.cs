@@ -16,7 +16,7 @@ namespace HECSFramework.Core
         [Key(2)]
         public Guid Guid;
 
-        public EntityResolver GetEntityResolver(IEntity entity)
+        public EntityResolver GetEntityResolver(Entity entity)
         {
             Systems = new List<ResolverDataContainer>(32);
             Components = new List<ResolverDataContainer>(32);
@@ -33,7 +33,7 @@ namespace HECSFramework.Core
                 Components.Add(EntityManager.ResolversMap.GetComponentContainer(c));
             }
 
-            foreach (var s in entity.GetAllSystems)
+            foreach (var s in entity.Systems)
             {
                 if (s == null)
                     continue;

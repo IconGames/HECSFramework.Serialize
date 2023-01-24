@@ -7,7 +7,7 @@ namespace HECSFramework.Core
 {
     public static class EntitySerializeExtentions
     {
-        public static IEntity CopyEntity(this IEntity entity)
+        public static Entity CopyEntity(this Entity entity)
         {
             var save = new EntityResolver().GetEntityResolver(entity);
             var copy = new Entity(entity.ID);
@@ -16,7 +16,7 @@ namespace HECSFramework.Core
             return copy;
         }
 
-        public static IEntity CopyEntity(this IEntity entity, World world)
+        public static Entity CopyEntity(this Entity entity, World world)
         {
             var save = new EntityResolver().GetEntityResolver(entity);
             var copy = new Entity(world, entity.ID);
@@ -25,7 +25,7 @@ namespace HECSFramework.Core
             return copy;
         }
 
-        public static void LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver, bool forceAdd = true)
+        public static void LoadEntityFromResolver(this Entity entity, EntityResolver entityResolver, bool forceAdd = true)
         {
             foreach (var c in entityResolver.Components)
             {
@@ -39,7 +39,7 @@ namespace HECSFramework.Core
                 {
                     var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
 
-                    if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
+                    if (entity.Systems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
                         continue;
 
                     entity.AddHecsSystem(newSys);
@@ -49,7 +49,7 @@ namespace HECSFramework.Core
             entity.SetGuid(entityResolver.Guid);
         }
 
-        public static IEntity GetEntityFromResolver(this EntityResolver entityResolver, int worldIndex = 0, bool addComponent = true)
+        public static Entity GetEntityFromResolver(this EntityResolver entityResolver, int worldIndex = 0, bool addComponent = true)
         {
             var data = new UnPackEntityResolver(entityResolver);
             var id = data.Components.FirstOrDefault(x => x is ActorContainerID) as ActorContainerID;
@@ -66,7 +66,7 @@ namespace HECSFramework.Core
             return entity;
         }
 
-        public static List<EntityResolver> GetResolversFromEntitiesList(this List<IEntity> entities)
+        public static List<EntityResolver> GetResolversFromEntitiesList(this List<Entity> entities)
         {
             var list = new List<EntityResolver>(8);
 
@@ -76,7 +76,7 @@ namespace HECSFramework.Core
             return list;
         }
 
-        public static Task LoadEntityFromResolver(this IEntity entity, EntityResolver entityResolver)
+        public static Task LoadEntityFromResolver(this Entity entity, EntityResolver entityResolver)
         {
             foreach (var c in entityResolver.Components)
             {
@@ -91,7 +91,7 @@ namespace HECSFramework.Core
                 if (newSys == null)
                     continue;
 
-                if (entity.GetAllSystems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
+                if (entity.Systems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
                     continue;
 
                 entity.AddHecsSystem(newSys);
@@ -100,9 +100,9 @@ namespace HECSFramework.Core
             return Task.CompletedTask;
         }
 
-        public static List<IEntity> GetEntitiesFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
+        public static List<Entity> GetEntitiesFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
         {
-            var list = new List<IEntity>(entitiesResolvers.Count);
+            var list = new List<Entity>(entitiesResolvers.Count);
 
             foreach (var e in entitiesResolvers)
                 list.Add(EntityManager.ResolversMap.GetEntityFromResolver(e, worldIndex));
@@ -110,7 +110,7 @@ namespace HECSFramework.Core
             return list;
         }
 
-        public static List<EntityResolver> GetEntityResolvers(this List<IEntity> entities)
+        public static List<EntityResolver> GetEntityResolvers(this List<Entity> entities)
         {
             var list = new List<EntityResolver>(entities.Count);
 
@@ -120,7 +120,7 @@ namespace HECSFramework.Core
             return list;
         }
 
-        public static void GetEntityResolvers(this List<IEntity> entities, ref List<EntityResolver> list)
+        public static void GetEntityResolvers(this List<Entity> entities, ref List<EntityResolver> list)
         {
             list.Clear();
 
@@ -128,7 +128,7 @@ namespace HECSFramework.Core
                 list.Add(new EntityResolver().GetEntityResolver(e));
         }
 
-        public static IEntity GetEntity(this UnPackEntityResolver unpackedEntityResolver)
+        public static Entity GetEntity(this UnPackEntityResolver unpackedEntityResolver)
         {
             unpackedEntityResolver.TryGetComponent<ActorContainerID>(out var id);
             var copy = new Entity(id.ID);
@@ -181,7 +181,7 @@ namespace HECSFramework.Core
             return entity;
         }
 
-        public static IEntity GetEntityFromCoreContainer(this IEntityContainer entityCoreContainer, World world, string entityName = default)
+        public static Entity GetEntityFromCoreContainer(this IEntityContainer entityCoreContainer, World world, string entityName = default)
         {
             Entity entity = null;
 

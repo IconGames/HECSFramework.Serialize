@@ -9,7 +9,7 @@ namespace HECSFramework.Core
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public EntityResolver TakeEntityFromWorld(IEntity entity)
+        public EntityResolver TakeEntityFromWorld(Entity entity)
         {
             var resolver = new EntityResolver().GetEntityResolver(entity);
             entity.Dispose();
@@ -43,7 +43,7 @@ namespace HECSFramework.Core
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public static IEntity MirgrateEntity(IEntity entity, World from, World to)
+        public static Entity MirgrateEntity(Entity entity, World from, World to)
         {
             to.MigrateEntityToWorld(entity);
             return entity;
@@ -56,7 +56,7 @@ namespace HECSFramework.Core
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public IEntity MirgrateEntity(Guid entity, World from, World to)
+        public Entity MirgrateEntity(Guid entity, World from, World to)
         {
             var resolver = from.TakeEntityFromWorld(entity);
             var newEntity = resolver.GetEntityFromResolver(to.Index);

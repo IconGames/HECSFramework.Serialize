@@ -34,7 +34,7 @@ namespace HECSFramework.Serialize
             data.Load(ref this);
         } 
 
-        public void Out(ref IEntity entity)
+        public void Out(ref Entity entity)
         {
             entity.GetComponent<AnimatorStateComponent>().State.Load(ref this);
         }

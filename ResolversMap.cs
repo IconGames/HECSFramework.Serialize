@@ -7,8 +7,8 @@ public partial interface IData { }
 
 namespace HECSFramework.Core
 {
-    public delegate void ProcessResolverContainer(ref ResolverDataContainer dataContainerForResolving, ref IEntity entity);
-    public delegate void ProcessReadOnlyMemoryToComponent(ref ReadOnlyMemory<byte> dataContainerForResolving, int typeHashCode, IEntity entity);
+    public delegate void ProcessResolverContainer(ref ResolverDataContainer dataContainerForResolving, ref Entity entity);
+    public delegate void ProcessReadOnlyMemoryToComponent(ref ReadOnlyMemory<byte> dataContainerForResolving, int typeHashCode, Entity entity);
     
     public delegate ResolverDataContainer GetContainer<T>(T component) where T : IComponent;
     public delegate IComponent GetComponentFromMemory (ref ReadOnlyMemory<byte> dataContainerForResolving, int componentTypeCode);
@@ -30,7 +30,7 @@ namespace HECSFramework.Core
 
         public void LoadDataFromContainer(ref ResolverDataContainer dataContainerForResolving, int worldIndex = 0) => LoadDataFromContainerSwitch(dataContainerForResolving, worldIndex);
 
-        public void LoadComponentFromContainer(ref ResolverDataContainer resolverDataContainer, ref IEntity entity, bool checkForAvailable = false)
+        public void LoadComponentFromContainer(ref ResolverDataContainer resolverDataContainer, ref Entity entity, bool checkForAvailable = false)
         {
             if (checkForAvailable)
             {
@@ -79,7 +79,7 @@ namespace HECSFramework.Core
 
         partial void LoadDataFromContainerSwitch(ResolverDataContainer dataContainerForResolving, int worldIndex);
 
-        public IEntity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
+        public Entity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
         
         private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {
