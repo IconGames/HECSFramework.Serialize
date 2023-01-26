@@ -19,7 +19,7 @@ namespace HECSFramework.Serialize
         }
     }
 
-    public sealed class ComponentToResolver<Component, Resolver> : IAddComponentToFastEntity where Component: IComponent where Resolver: struct, IData, IResolver<Resolver, Component>
+    public sealed class ComponentToResolver<Component, Resolver> : IAddComponentToFastEntity where Component: IComponent where Resolver: struct, IFastComponent, IResolver<Resolver, Component>
     {
         private Resolver resolver = default;
 
