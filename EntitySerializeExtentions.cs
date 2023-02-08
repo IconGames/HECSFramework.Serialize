@@ -57,7 +57,7 @@ namespace HECSFramework.Core
             Entity entity;
 
             if (id != null)
-                entity = new Entity(EntityManager.Worlds.Data[worldIndex], id.ID);
+                entity = new Entity(EntityManager.Worlds[worldIndex], id.ID);
             else
                 entity = new Entity(entityResolver.Guid.ToString());
 
@@ -154,9 +154,9 @@ namespace HECSFramework.Core
             }
 
             if (string.IsNullOrEmpty(entityName))
-                entity = new Entity(EntityManager.Worlds.Data[worldIndex], entityName);
+                entity = new Entity(EntityManager.Worlds[worldIndex], entityName);
             else
-                entity = new Entity(EntityManager.Worlds.Data[worldIndex], entityCoreContainer.ContainerID);
+                entity = new Entity(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
             return entity;
@@ -173,9 +173,9 @@ namespace HECSFramework.Core
             }
 
             if (string.IsNullOrEmpty(entityName))
-                entity = new Entity(EntityManager.Worlds.Data[worldIndex], entityName);
+                entity = new Entity(EntityManager.Worlds[worldIndex], entityName);
             else
-                entity = new Entity(EntityManager.Worlds.Data[worldIndex], entityCoreContainer.ContainerID);
+                entity = new Entity(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
             return entity;
