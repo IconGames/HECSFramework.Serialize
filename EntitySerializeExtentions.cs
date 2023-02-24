@@ -10,7 +10,7 @@ namespace HECSFramework.Core
         public static Entity CopyEntity(this Entity entity)
         {
             var save = new EntityResolver().GetEntityResolver(entity);
-            var copy = new Entity(entity.ID);
+            var copy = Entity.Get(entity.World, entity.ID);
             var unpack = new UnPackEntityResolver(save);
             unpack.Init(copy);
             return copy;
@@ -19,7 +19,7 @@ namespace HECSFramework.Core
         public static Entity CopyEntity(this Entity entity, World world)
         {
             var save = new EntityResolver().GetEntityResolver(entity);
-            var copy = new Entity(world, entity.ID);
+            var copy = Entity.Get(world, entity.ID);
             var unpack = new UnPackEntityResolver(save);
             unpack.Init(copy);
             return copy;
@@ -57,9 +57,9 @@ namespace HECSFramework.Core
             Entity entity;
 
             if (id != null)
-                entity = new Entity(EntityManager.Worlds[worldIndex], id.ID);
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], id.ID);
             else
-                entity = new Entity(entityResolver.Guid.ToString());
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], entityResolver.Guid.ToString());
 
             data.Init(entity);
             entity.SetGuid(entityResolver.Guid);
@@ -128,10 +128,10 @@ namespace HECSFramework.Core
                 list.Add(new EntityResolver().GetEntityResolver(e));
         }
 
-        public static Entity GetEntity(this UnPackEntityResolver unpackedEntityResolver)
+        public static Entity GetEntity(this UnPackEntityResolver unpackedEntityResolver, World world)
         {
             unpackedEntityResolver.TryGetComponent<ActorContainerID>(out var id);
-            var copy = new Entity(id.ID);
+            var copy = Entity.Get(world, id.ID);
             unpackedEntityResolver.Init(copy);
             return copy.CopyEntity();
         }
@@ -154,9 +154,9 @@ namespace HECSFramework.Core
             }
 
             if (string.IsNullOrEmpty(entityName))
-                entity = new Entity(EntityManager.Worlds[worldIndex], entityName);
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], entityName);
             else
-                entity = new Entity(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
             return entity;
@@ -173,9 +173,9 @@ namespace HECSFramework.Core
             }
 
             if (string.IsNullOrEmpty(entityName))
-                entity = new Entity(EntityManager.Worlds[worldIndex], entityName);
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], entityName);
             else
-                entity = new Entity(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
+                entity = Entity.Get(EntityManager.Worlds[worldIndex], entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
             return entity;
@@ -192,9 +192,9 @@ namespace HECSFramework.Core
             }
 
             if (string.IsNullOrEmpty(entityName))
-                entity = new Entity(world, entityName);
+                entity = Entity.Get(world, entityName);
             else
-                entity = new Entity(world, entityCoreContainer.ContainerID);
+                entity = Entity.Get(world, entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
             var copy = entity.CopyEntity(world);

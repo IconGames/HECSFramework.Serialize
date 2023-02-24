@@ -11,7 +11,8 @@ namespace HECSFramework.Core
 
         public virtual void Init(Entity entityForInit)
         {
-            var entity = new Entity(ContainerID);
+            //todo тут скорее всего нужно не через резолвер и ентити, а через сериализацию/резолвеоы компонентов накатывать
+            var entity = Entity.Get(ContainerID);
             entity.AddComponent(new ActorContainerID { ID = ContainerID });
 
             var components = GetComponents();
