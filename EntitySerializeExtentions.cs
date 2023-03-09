@@ -197,9 +197,8 @@ namespace HECSFramework.Core
                 entity = Entity.Get(world, entityCoreContainer.ContainerID);
 
             entityCoreContainer.Init(entity);
-            var copy = entity.CopyEntity(world);
-            copy.GenerateGuid();
-            return copy;
+            
+            return entity;
         }
     }
 }
