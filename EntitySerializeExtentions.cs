@@ -76,28 +76,9 @@ namespace HECSFramework.Core
             return list;
         }
 
-        public static Task LoadEntityFromResolver(this Entity entity, EntityResolver entityResolver)
+        public static void LoadEntityFromResolver(this Entity entity, EntityResolver entityResolver)
         {
-            foreach (var c in entityResolver.Components)
-            {
-                var componentResolver = c;
-                EntityManager.ResolversMap.LoadComponentFromContainer(ref componentResolver, ref entity, true);
-            }
-
-            foreach (var s in entityResolver.Systems)
-            {
-                var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
-
-                if (newSys == null)
-                    continue;
-
-                if (entity.Systems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
-                    continue;
-
-                entity.AddHecsSystem(newSys);
-            }
-
-            return Task.CompletedTask;
+            entity.LoadEntityFromResolver(entityResolver, true);
         }
 
         public static List<Entity> GetEntitiesFromResolvers(this List<EntityResolver> entitiesResolvers, int worldIndex = 0)
