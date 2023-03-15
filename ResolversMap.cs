@@ -34,7 +34,7 @@ namespace HECSFramework.Core
         {
             if (checkForAvailable)
             {
-                    if (!entity.ContainsMask(resolverDataContainer.TypeHashCode))
+                    if (!entity.ContainsMask(resolverDataContainer.TypeHashCode) && TypesMap.ContainsComponent(resolverDataContainer.TypeHashCode))
                     {
                         var component = GetComponentFromContainer(resolverDataContainer);
                         entity.AddComponent(component);
