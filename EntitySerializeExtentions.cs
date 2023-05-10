@@ -39,6 +39,12 @@ namespace HECSFramework.Core
                 {
                     var newSys = EntityManager.ResolversMap.GetSystemFromContainer(s);
 
+                    if (newSys == null)
+                    {
+                        HECSDebug.LogWarning("we have null system at " + entityResolver.Guid);
+                        continue;
+                    }
+
                     if (entity.Systems.Any(x => x.GetTypeHashCode == newSys.GetTypeHashCode))
                         continue;
 
