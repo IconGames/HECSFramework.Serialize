@@ -81,12 +81,20 @@ namespace HECSFramework.Core
 
         public Entity GetEntityFromResolver(EntityResolver entityResolver, int worldIndex = 0) => entityResolver.GetEntityFromResolver(worldIndex);
         
+        public void CopyFromComponentToEntityComponent(IComponent from, Entity to, bool checkForAvailability = false)
+        {
+            var container = GetComponentContainer(from);
+            var data = MessagePackSerializer.Serialize(container);
+            var unpack = MessagePackSerializer.Deserialize<ResolverDataContainer>(data);
+            LoadComponentFromContainer(ref unpack, ref to, checkForAvailability);
+        }
+
         private ResolverDataContainer PackComponentToContainer<T, U>(T component, U data) where T : IComponent where U : IData
         {
             return new ResolverDataContainer
             {
-                Data = MessagePack.MessagePackSerializer.Serialize(data),
-                EntityGuid = component.Owner.GUID,
+                Data = MessagePackSerializer.Serialize(data),
+                EntityGuid = component.Owner != null ? component.Owner.GUID : default,
                 Type = 0,
                 TypeHashCode = component.GetTypeHashCode,
             };
