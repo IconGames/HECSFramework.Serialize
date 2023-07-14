@@ -26,26 +26,26 @@ namespace HECSFramework.Serialize
         }
         #endregion
 
-        public void SetBool(int id, bool value)
+        public void SetBool(int id, bool value, bool forceSet = false)
         {
             if (boolParameters.TryGetValue(id, out var parameter))
-                parameter.Set(value);
+                parameter.Set(value, forceSet);
             else
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
-        public void SetFloat(int id, float value)
+        public void SetFloat(int id, float value, bool forceSet = false)
         {
             if (floatParameters.TryGetValue(id, out var parameter))
-                parameter.Set(value);
+                parameter.Set(value, forceSet   );
             else
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
-        public void SetInt(int id, int value)
+        public void SetInt(int id, int value, bool forceSet = false)
         {
             if (intParameters.TryGetValue(id, out var parameter))
-                parameter.Set(value);
+                parameter.Set(value, forceSet);
             else
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }

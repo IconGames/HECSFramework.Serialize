@@ -13,9 +13,9 @@
             Value = value;
         }
 
-        public void Set(T value)
+        public void Set(T value, bool force = false)
         {
-            if (value.Equals(Value)) return;
+            if (!force && value.Equals(Value)) return;
             IsDirty = true;
             LocalSet(value);
             SetValueToAnimator();
