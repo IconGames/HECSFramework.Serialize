@@ -4,6 +4,8 @@ namespace HECSFramework.Serialize
 {
     public sealed partial class FloatParameter : AnimatorParameter<float>
     {
+        public float DampTime;
+        public float DeltaTime;
         public FloatParameter(int parametrName) : base(parametrName)
         {
         }

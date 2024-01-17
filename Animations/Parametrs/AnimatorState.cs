@@ -34,10 +34,14 @@ namespace HECSFramework.Serialize
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }
 
-        public void SetFloat(int id, float value, bool forceSet = false)
+        public void SetFloat(int id, float value, float dampTime = 0f, float deltaTime = 0f, bool forceSet = false)
         {
             if (floatParameters.TryGetValue(id, out var parameter))
-                parameter.Set(value, forceSet   );
+            {
+                parameter.Set(value, forceSet);
+                parameter.DampTime = dampTime;
+                parameter.DeltaTime = deltaTime;
+            }
             else
                 HECSDebug.LogWarning("we dont have parameter " + id);
         }
