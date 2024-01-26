@@ -38,9 +38,9 @@ namespace HECSFramework.Serialize
         {
             if (floatParameters.TryGetValue(id, out var parameter))
             {
-                parameter.Set(value, forceSet);
                 parameter.DampTime = dampTime;
                 parameter.DeltaTime = deltaTime;
+                parameter.Set(value, forceSet);
             }
             else
                 HECSDebug.LogWarning("we dont have parameter " + id);
